@@ -20,6 +20,8 @@ Copy `.env.example` to `.env` and keep:
 APP_HOST=127.0.0.1
 APP_PORT=8080
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/paldesigner
+ARTIFACT_STORAGE_ROOT=.
+MAX_IMPORT_ZIP_BYTES=157286400
 RUST_LOG=info
 ```
 
@@ -32,4 +34,9 @@ cargo run
 ```powershell
 curl http://127.0.0.1:8080/health
 curl http://127.0.0.1:8080/ready
+```
+
+## Import ZIP Check
+```powershell
+curl.exe -F "file=@C:\path\to\WorldFolder.zip;type=application/zip" http://127.0.0.1:8080/api/v1/save/import-zip
 ```

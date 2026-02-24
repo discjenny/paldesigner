@@ -5,13 +5,17 @@ edition = "2024"
 
 [dependencies]
 anyhow = "1.0.99"
-axum = "0.8.4"
+axum = { version = "0.8.4", features = ["multipart"] }
 dotenvy = "0.15.7"
+flate2 = "1.1.2"
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.143"
-sqlx = { version = "0.8.6", features = ["runtime-tokio-rustls", "postgres", "uuid", "chrono"] }
-tokio = { version = "1.47.1", features = ["macros", "rt-multi-thread", "signal", "time"] }
+sha2 = "0.10.9"
+sqlx = { version = "0.8.6", features = ["runtime-tokio-rustls", "postgres", "uuid", "chrono", "migrate"] }
+tokio = { version = "1.47.1", features = ["macros", "rt-multi-thread", "signal", "time", "fs"] }
 tower-http = { version = "0.6.6", features = ["cors", "trace"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.20", features = ["env-filter", "fmt", "json"] }
 uuid = { version = "1.18.1", features = ["v4", "serde"] }
+xxhash-rust = { version = "0.8.15", features = ["xxh64"] }
+zip = { version = "0.6.6", default-features = false, features = ["deflate"] }

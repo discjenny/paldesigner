@@ -10,3 +10,10 @@ pub async fn connect(database_url: &str) -> Result<PgPool> {
         .await
         .with_context(|| "failed to connect to PostgreSQL")
 }
+
+pub async fn migrate(pool: &PgPool) -> Result<()> {
+    sqlx::migrate!("./src/db/migrations")
+        .run(pool)
+        .await
+        .with_context(|| "failed to run PostgreSQL migrations")
+}

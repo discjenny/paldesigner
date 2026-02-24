@@ -8,7 +8,7 @@
 
 ## Current Status
 - Date baseline: 2026-02-24
-- Phase in progress: Phase 1
+- Phase in progress: Phase 3
 - Blockers: None
 
 ## Locked Decisions
@@ -356,8 +356,8 @@ Tasks:
 - [x] Create DB module skeleton in `src/server/src/db/mod.rs`.
 - [x] Create migration folder `src/server/src/db/migrations/`.
 - [x] Create API routing skeleton in `src/server/src/api/routes.rs`.
-- [ ] Create save modules (`zip.rs`, `detect.rs`, `parse.rs`, `normalize.rs`, `patch.rs`, `export.rs`) under `src/server/src/save/`.
-- [ ] Create storage module `src/server/src/storage/fs.rs`.
+- [x] Create save modules (`zip.rs`, `detect.rs`, `parse.rs`, `normalize.rs`, `patch.rs`, `export.rs`) under `src/server/src/save/`.
+- [x] Create storage module `src/server/src/storage/fs.rs`.
 - [x] Create Vite React app under `src/web/` using Bun.
 - [x] Add API client module `src/web/src/lib/api.ts`.
 - [x] Add shared frontend types `src/web/src/lib/types.ts`.
@@ -368,12 +368,13 @@ Definition of done:
 - All required tables exist with keys and constraints.
 
 Tasks:
-- [ ] Create migration `0001_save_versions.sql` for import/export version tables.
-- [ ] Create migration `0002_save_artifacts.sql` for ZIP and file manifests.
-- [ ] Create migration `0003_patchsets.sql` for patchset and operations.
+- [x] Create migration `0001_save_versions.sql` for import/export version tables.
+- [x] Create migration `0002_save_artifacts.sql` for ZIP and file manifests.
+- [x] Create migration `0003_patchsets.sql` for patchset and operations.
 - [ ] Create migration `0004_normalized_entities.sql` for planner players/pals/assignments.
 - [ ] Create migration `0005_links.sql` for normalized-to-raw link tables.
 - [ ] Create migration `0006_lineage.sql` for export lineage table.
+- [x] Run SQLx migrations automatically at Rust server startup.
 - [ ] Add Rust model structs for every table.
 - [ ] Add integration test that migrates empty DB and verifies all tables/constraints exist.
 
@@ -382,20 +383,20 @@ Definition of done:
 - ZIP import endpoint stores immutable source artifacts and normalized records.
 
 Tasks:
-- [ ] Implement multipart upload handler `POST /api/v1/save/import-zip`.
-- [ ] Compute SHA-256, XXH64, and size for uploaded ZIP.
-- [ ] Persist ZIP artifact file to import storage key.
-- [ ] Extract ZIP with path sanitization and reject traversal entries.
-- [ ] Auto-detect nested world root and validate required files (`Level.sav`, `Players/*.sav`).
-- [ ] Persist extracted files and manifests.
-- [ ] Mark unsupported extra files as ignored.
-- [ ] Detect wrapper/compression variant for each target `.sav`.
-- [ ] Persist variant metadata rows.
+- [x] Implement multipart upload handler `POST /api/v1/save/import-zip`.
+- [x] Compute SHA-256, XXH64, and size for uploaded ZIP.
+- [x] Persist ZIP artifact file to import storage key.
+- [x] Extract ZIP with path sanitization and reject traversal entries.
+- [x] Auto-detect nested world root and validate required files (`Level.sav`, `Players/*.sav`).
+- [x] Persist extracted files and manifests.
+- [x] Mark unsupported extra files as ignored.
+- [x] Detect wrapper/compression variant for each target `.sav`.
+- [x] Persist variant metadata rows.
 - [ ] Parse planner-scope entities from extracted files.
 - [ ] Document discovered mapping for base pal assignment fields and work target fields using real save inspection plus Pal Editor reference.
 - [ ] Persist normalized planner entities.
 - [ ] Persist normalized-to-raw link rows.
-- [ ] Return `import_version_id`.
+- [x] Return `import_version_id`.
 
 ## Phase 4: Normalization and Planner Projection
 Definition of done:
@@ -517,11 +518,11 @@ Tasks:
 - [ ] Release checklist documented and executed.
 
 ## Immediate Next Tasks (Execution Queue)
-- [ ] Implement `src/server/src/save/*` module skeletons.
-- [ ] Implement `src/server/src/storage/fs.rs` module skeleton.
-- [ ] Implement PostgreSQL migrations `0001` through `0003`.
-- [ ] Implement `POST /api/v1/save/import-zip` happy path.
+- [x] Implement PostgreSQL migrations `0001` through `0003`.
+- [x] Implement `POST /api/v1/save/import-zip` happy path.
 - [ ] Implement minimal normalized payload endpoint.
+- [ ] Add integration tests for import endpoint ZIP validation and artifact persistence.
+- [ ] Implement planner-scope entity extraction from decoded `Level.sav` + `Players/*.sav`.
 
 ## Decisions Log
 - 2026-02-24: Stack fixed to Bun frontend + Rust webserver + PostgreSQL + Docker. Python scripts use `uv`.
@@ -541,3 +542,13 @@ Tasks:
 - 2026-02-24: Import/export player save directory name is locked to `Players/` only; `Player/` is rejected.
 - 2026-02-24: Local development database `paldesigner` is created and validated with credentials `postgres:postgres`.
 - 2026-02-24: Rust `/ready` check uses `SELECT 1` decoded as `i32` to match PostgreSQL scalar type.
+- 2026-02-24: Server dependencies now include Axum multipart, SQLx migrations, ZIP handling, SHA-256, XXH64, and PLZ zlib decode support for importer implementation.
+- 2026-02-24: Server config now includes `ARTIFACT_STORAGE_ROOT` and `MAX_IMPORT_ZIP_BYTES` for importer storage and upload validation.
+- 2026-02-24: `.env.example` now documents importer storage root and max ZIP size settings.
+- 2026-02-24: Default `ARTIFACT_STORAGE_ROOT` is now `.` so logical storage keys persist at `storage/...` exactly per contract.
+- 2026-02-24: `/api/v1/save/import-zip` now persists immutable import ZIP + extracted files, enforces nested-root detection rules, and writes SAV wrapper/parse metadata.
+- 2026-02-24: Import API response now includes a serializable normalized summary placeholder (`players`, `pals`, `assignments` counts = `0` until planner parsing is implemented).
+- 2026-02-24: Axum default body size limit is disabled to support large multipart ZIP uploads; importer enforces explicit `MAX_IMPORT_ZIP_BYTES` at handler level.
+- 2026-02-24: `gamesave.zip` import verified end-to-end (`201`), persisted 1 source ZIP + 6 extracted files + 6 variant rows; sample save variant detected as `PLM` (`save_type=0x31`, Oodle), so GVAS decode remains `not_attempted` pending Oodle support.
+- 2026-02-24: Current Rust importer build status is clean (`cargo fmt`, `cargo check`), with only expected placeholder dead-code warnings in `save/export.rs` and `save/patch.rs`.
+- 2026-02-24: `src/server/README.md` now includes a concrete `curl` command for manual `POST /api/v1/save/import-zip` validation.
