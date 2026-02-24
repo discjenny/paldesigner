@@ -1,0 +1,835 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Palworld Database Wiki</title>
+    <meta name="color-scheme" content="dark">
+    <link href="/favicon.ico" rel="icon" type="image/x-icon" >
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" crossorigin="anonymous"/>
+    <!--<link rel="stylesheet" href="https://cdn.paldb.cc/css/dataTables.bootstrap5.min.css" />-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.6.16/sweetalert2.min.css" integrity="sha512-NvuRGlPf6cHpxQqBGnPe7fPoACpyrjhlSNeXVUY7BZAj1nNhuNpRBq3osC4yr2vswUEuHq2HtCsY2vfLNCndYA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modal-video@2.4.6/css/modal-video.min.css" integrity="sha256-nd8IBqNn9uqwZKfZcLIXQcNxk5TjqrxiLx7PzN5PFW0=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/stdtheme.css?1771303867"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js" integrity="sha512-ToL6UYWePxjhDQKNioSi4AyJ5KkRxY+F1+Fi7Jgh0Hp5Kk2/s8FD7zusJDdonfe5B00Qw+B8taXxF6CFLnqNCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.paldb.cc/js/dataTables.bootstrap5.js?3"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js" integrity="sha512-lteuRD+aUENrZPTXWFRPTBcDDxIGWe5uu0apPEn+3ZKYDwDaEErIK9rvR0QzUGmUQ55KFE2RqGTVoZsKctGMVw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/@popperjs/core@2" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/tippy.js@6" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.6.16/sweetalert2.all.min.js" integrity="sha512-4tvE14sHIcdIHl/dUdMHp733PI6MpYA7BDnDfndQmx7aIovEkW+LfkonVO9+NPWP1jYzmrqXJMIT2tECv1TsEQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!--<script src="https://unpkg.com/mustache@latest" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/modal-video@2.4.6/js/modal-video.min.js" integrity="sha256-VqINwNxkS4VEDMq5O52YTckX+Mx84X6bafO8NxF21Xw=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.3.1/tinymce.min.js" integrity="sha512-eV68QXP3t5Jbsf18jfqT8xclEJSGvSK5uClUuqayUbF5IRK8e2/VSXIFHzEoBnNcvLBkHngnnd3CY7AFpUhF7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js" integrity="sha512-Ixzuzfxv1EqafeQlTCufWfaC6ful6WFqIz4G+dWvK0beHw0NVJwvCKSgafpy5gwNqKmgUfIBraVwkKI+Cz0SEQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/js/header.js?1771303867"></script>
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2Z1WF1TB29"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-2Z1WF1TB29');
+</script>
+
+<script data-cfasync="false">window.nitroAds=window.nitroAds||{createAd:function(){return new Promise(e=>{window.nitroAds.queue.push(["createAd",arguments,e])})},addUserToken:function(){window.nitroAds.queue.push(["addUserToken",arguments])},queue:[]};</script>
+<script data-cfasync="false" async src="https://s.nitropay.com/ads-1818.js"></script>
+  </head>
+  <body>
+
+    <div id="consent-box" style="display:none">
+      <button onclick="window.__cmp('showModal');">
+        Update cookie preferences
+      </button>
+    </div>
+    
+    <script>
+      if (window["nitroAds"] && window["nitroAds"].loaded) {
+        document.getElementById("consent-box").style.display = window["__tcfapi"]
+          ? ""
+          : "none";
+      } else {
+        document.addEventListener(
+          "nitroAds.loaded",
+          () =>
+            (document.getElementById("consent-box").style.display = window["__tcfapi"]
+              ? ""
+              : "none")
+        );
+      }
+    </script>
+
+    <div class="background-image"></div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="/en/" data-i18n-tw="帕魯編年史">Paldb.cc</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="category_type_a_pal">
+                Pal
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Pals" data-i18n="category_type_a_pal">Pal</a></li>
+                <li><a class="dropdown-item" href="/en/Alpha_Pals" data-i18n="pal_box_sorttype_boss_flag">Alpha Pals</a></li>
+                <li><a class="dropdown-item" href="/en/Rampaging" data-i18n="predator_name">Rampaging</a></li>
+                <li><a class="dropdown-item" href="/en/Tower" data-i18n="map_filter_bosstower">Tower</a></li>
+                <li><a class="dropdown-item" href="/en/Raid" data-i18n="warning_invader_start_title">Raid</a></li>
+                <li><a class="dropdown-item" href="/en/Humans" data-i18n-tw="人類">Humans</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/en/Element_Swap" data-i18n-tw="攻擊賦予屬性">Element Swap</a></li>
+                <li><a class="dropdown-item" href="/en/Weight_Increase" data-i18n-tw="負重增加">Weight Increase</a></li>
+                <li><a class="dropdown-item" href="/en/Mounts" data-i18n-tw="坐騎">Mounts</a></li>
+                <li><a class="dropdown-item" href="/en/Glider" data-i18n="common_itemtype_a_glider">Glider</a></li>
+                <li><a class="dropdown-item" href="/en/Drop_Rate" data-i18n-tw="掉落倍率">Drop Rate</a></li>
+                <li><a class="dropdown-item" href="/en/Party_Buffs" data-i18n-tw="隊伍增益">Party Buffs</a></li>
+                <li><a class="dropdown-item" href="/en/Pal_Stats" data-i18n-tw="帕魯屬性">Pal Stats</a></li>
+                <li><a class="dropdown-item" href="/en/Spoiler">Spoiler</a></li>
+              </ul>
+            </li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="common_work_suitability">
+                Work Suitability
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Kindling"><img alt="T_icon_palwork_00" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_00.webp" height="24" /><span data-i18n="common_work_suitability_emitflame">Kindling</span></a></li>
+                <li><a class="dropdown-item" href="/en/Watering"><img alt="T_icon_palwork_01" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_01.webp" height="24" /><span data-i18n="common_work_suitability_watering">Watering</span></a></li>
+                <li><a class="dropdown-item" href="/en/Planting"><img alt="T_icon_palwork_02" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_02.webp" height="24" /><span data-i18n="common_work_suitability_seeding">Planting</span></a></li>
+                <li><a class="dropdown-item" href="/en/Generating_Electricity"><img alt="T_icon_palwork_03" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_03.webp" height="24"/><span data-i18n="common_work_suitability_generateelectricity">Generating Electricity</span></a></li>
+                <li><a class="dropdown-item" href="/en/Handiwork"><img alt="T_icon_palwork_04" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_04.webp" height="24" /><span data-i18n="common_work_suitability_handcraft">Handiwork</span></a></li>
+                <li><a class="dropdown-item" href="/en/Gathering"><img alt="T_icon_palwork_05" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_05.webp" height="24" /><span data-i18n="common_work_suitability_collection">Gathering</span></a></li>
+                <li><a class="dropdown-item" href="/en/Lumbering"><img alt="T_icon_palwork_06" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_06.webp" height="24" /><span data-i18n="common_work_suitability_deforest">Lumbering</span></a></li>
+                <li><a class="dropdown-item" href="/en/Mining"><img alt="T_icon_palwork_07" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_07.webp" height="24" /><span data-i18n="common_work_suitability_mining">Mining</span></a></li>
+                <li><a class="dropdown-item" href="/en/Medicine_Production"><img alt="T_icon_palwork_08" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_08.webp" height="24" /><span data-i18n="common_work_suitability_productmedicine">Medicine Production</span></a></li>
+                <!--<li><a class="dropdown-item" href="/en/Crude_oil_extraction"><img alt="T_icon_palwork_09" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_09.webp" height="24" /><span data-i18n="common_work_suitability_oilextraction">Crude oil extraction</span></a></li>-->
+                <li><a class="dropdown-item" href="/en/Cooling"><img alt="T_icon_palwork_10" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_10.webp" height="24"/><span data-i18n="common_work_suitability_cool">Cooling</span></a></li>
+                <li><a class="dropdown-item" href="/en/Transporting"><img alt="T_icon_palwork_11" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_11.webp" height="24" /><span data-i18n="common_work_suitability_transport">Transporting</span></a></li>
+                <li><a class="dropdown-item" href="/en/Farming"><img alt="T_icon_palwork_12" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_12.webp" height="24" /><span data-i18n="common_work_suitability_monsterfarm">Farming</span></a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/en/Work_Suitability" data-i18n="common_work_suitability">Work Suitability</a></li>
+                <li><a class="dropdown-item" href="/en/SAN">SAN</a></li>
+              </ul>
+            </li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n-tw="技能">
+                Skills
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Partner_Skill" data-i18n="common_coop_action">Partner Skill</a></li>
+                <li><a class="dropdown-item" href="/en/Active_Skills" data-i18n="common_active_skill">Active Skills</a></li>
+                <li><a class="dropdown-item" href="/en/Passive_Skills" data-i18n="common_characteristic">Passive Skills</a></li>
+                <li><a class="dropdown-item" href="/en/Skill_Fruit" data-i18n-tw="技能果實">Skill Fruit</a></li>
+              </ul>
+            </li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="ingame_main_menu_inventory">
+                Inventory
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Weapon" data-i18n="common_itemtype_a_weapon">Weapon</a></li>
+                <li><a class="dropdown-item" href="/en/Sphere" data-i18n="common_itemtype_a_specialweapon">Sphere</a></li>
+                <li><a class="dropdown-item" href="/en/Sphere_Module" data-i18n="common_itemtype_a_captureitemmodifier">Sphere Module</a></li>
+                <li><a class="dropdown-item" href="/en/Armor" data-i18n="common_itemtype_a_armor">Armor</a></li>
+                <li><a class="dropdown-item" href="/en/Accessory" data-i18n="common_itemtype_a_accessory">Accessory</a></li>
+                <li><a class="dropdown-item" href="/en/Material" data-i18n="common_itemtype_a_material">Material</a></li>
+                <li><a class="dropdown-item" href="/en/Consumable" data-i18n="common_itemtype_a_consume">Consumable</a></li>
+                <li><a class="dropdown-item" href="/en/Ammo" data-i18n="common_itemtype_a_ammo">Ammo</a></li>
+                <li><a class="dropdown-item" href="/en/Ingredient" data-i18n="common_itemtype_a_food">Ingredient</a></li>
+                <li><a class="dropdown-item" href="/en/Key_Items" data-i18n="common_itemtype_a_essential">Key Items</a></li>
+                <li><a class="dropdown-item" href="/en/Glider" data-i18n="common_itemtype_a_glider">Glider</a></li>
+                <li><a class="dropdown-item" href="/en/Schematic" data-i18n="common_itemtype_a_blueprint">Schematic</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/en/Chest_filters" data-i18n-tw="箱子篩選">Chest filters</a></li>
+                <li><a class="dropdown-item" href="/en/Legendary" data-i18n="rarity_legendary">Legendary</a></li>
+              </ul>
+            </li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="common_work_type_architecture">
+                Construction
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Production"><img alt="T_icon_construction_tab_00" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_00.webp" height="24"/><span data-i18n="category_type_a_product">Production</span></a></li>
+                <li><a class="dropdown-item" href="/en/Pal"><img alt="T_icon_construction_tab_01" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_01.webp" height="24"/><span data-i18n="category_type_a_pal">Pal</span></a></li>
+                <li><a class="dropdown-item" href="/en/Storage"><img alt="T_icon_construction_tab_02" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_02.webp" height="24"/><span data-i18n="category_type_a_storage">Storage</span></a></li>
+                <li><a class="dropdown-item" href="/en/Food"><img alt="T_icon_construction_tab_03" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_03.webp" height="24"/><span data-i18n="category_type_a_food">Food</span></a></li>
+                <li><a class="dropdown-item" href="/en/Infrastructure"><img alt="T_icon_construction_tab_04" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_04.webp" height="24"/><span data-i18n="category_type_a_infrastructure">Infrastructure</span></a></li>
+                <li><a class="dropdown-item" href="/en/Lighting"><img alt="T_icon_construction_tab_05" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_05.webp" height="24"/><span data-i18n="category_type_a_light">Lighting</span></a></li>
+                <li><a class="dropdown-item" href="/en/Foundations"><img alt="T_icon_construction_tab_06" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_06.webp" height="24"/><span data-i18n="category_type_a_foundation">Foundations</span></a></li>
+                <li><a class="dropdown-item" href="/en/Defenses"><img alt="T_icon_construction_tab_07" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_07.webp" height="24"/><span data-i18n="category_type_a_defense">Defenses</span></a></li>
+                <li><a class="dropdown-item" href="/en/Other"><img alt="T_icon_construction_tab_08" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_08.webp" height="24"/><span data-i18n="category_type_a_other">Other</span></a></li>
+                <li><a class="dropdown-item" href="/en/Furniture"><img alt="T_icon_construction_tab_09" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_09.webp" height="24"/><span data-i18n="category_type_a_furniture">Furniture</span></a></li>
+                <!--
+                <li><a class="dropdown-item" href="/en/Schematics"><img alt="T_icon_construction_tab_10" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_10.webp" height="24"/><span data-i18n="category_type_a_blueprint">Schematics</span></a></li>
+                -->
+              </ul>
+            </li>
+    
+    
+            <li class="nav-item">
+              <a class="nav-link" href="/en/Map" data-i18n="setting_key_ui_openworldmap" data-i18n-tw="地圖">Map</a>
+            </li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n-tw="計算">
+                Calc
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Breed" data-i18n-tw="配種計算">Breeding Calc</a></li>
+                <!--<li><a class="dropdown-item" href="/en/BreedEoC" data-i18n-tw="配種計算 +克蘇魯之眼">Breeding Calc +Eye of Cthulhu</a></li>-->
+                <li><a class="dropdown-item" href="/en/Iv_Calc" data-i18n-tw="個體值計算">IV Calc</a></li>
+                <li><a class="dropdown-item" href="/en/Pal_Calc" data-i18n-tw="帕魯計算">Pal Calc</a></li>
+                <li><a class="dropdown-item" href="/en/Capture_Rate" data-i18n="capture_reticle_capture_rate">Capture Rate</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/en/Mods" data-i18n-tw="模組安裝">Mods Install</a></li>
+                <!--
+                <li><a class="dropdown-item" href="/en/Pals_Table">Pals Table</a></li>
+                <li><a class="dropdown-item" href="/en/NPCs_Table">NPCs Table</a></li>
+                <li><a class="dropdown-item" href="/en/Items_Table">Items Table</a></li>
+                <li><a class="dropdown-item" href="/en/ActiveSkills_Table">ActiveSkills Table</a></li>
+                <li><a class="dropdown-item" href="/en/PassiveSkills_Table">PassiveSkills Table</a></li>
+                -->
+    
+              </ul>
+            </li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="category_type_a_other">
+                Other
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Breeding_Farm" data-i18n="mapobject_name_breedfarm">Breeding Farm</a></li>
+                <li><a class="dropdown-item" href="/en/Technologies" data-i18n="ingame_main_menu_technology">Technologies</a></li>
+                <li><a class="dropdown-item" href="/en/Merchant" data-i18n="name_selesperson">Merchant</a></li>
+                <li><a class="dropdown-item" href="/en/Black_Marketeer" data-i18n="name_darktrader">Black Marketeer</a></li>
+                <li><a class="dropdown-item" href="/en/Treasure_Box" data-i18n-tw="寶箱">Treasure Box</a></li>
+                <li><a class="dropdown-item" href="/en/Arrogant_Pal_Critic" data-i18n="name_reward_paldisplay">Arrogant Pal Critic</a></li>
+                <li><a class="dropdown-item" href="/en/Arrogant_Foodie" data-i18n="name_reward_food">Arrogant Foodie</a></li>
+                <li><a class="dropdown-item" href="/en/Journals" data-i18n="note_title">Memo</a></li>
+                <li><a class="dropdown-item" href="/en/Tips" data-i18n="helpguide_title">Tips</a></li>
+                <li><a class="dropdown-item" href="/en/Base" data-i18n="map_filter_camp">Base</a></li>
+                <li><a class="dropdown-item" href="/en/Mission" data-i18n="ingame_mainmenu_quest">Mission</a></li>
+                <li><a class="dropdown-item" href="/en/Dungeons" data-i18n-tw="地下城">Dungeons</a></li>
+                <li><a class="dropdown-item" href="/en/Eggs" data-i18n-tw="帕魯蛋">Eggs</a></li>
+                <li><a class="dropdown-item" href="/en/Caged" data-i18n-tw="籠子">Caged</a></li>
+                <!--<li><a class="dropdown-item" href="/en/Roadmap" data-i18n-tw="更新計畫">Roadmap</a></li>-->
+              </ul>
+            </li>
+    
+          </ul>
+    
+          <ul class="navbar-nav language-selector">
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-language fa-lg"></i></a>
+              <ul class="dropdown-menu language-menu">
+                <li><a class='dropdown-item' href='/en/'>EN English</a></li>
+                <li><a class='dropdown-item' href='/tw/'>TW 繁體中文</a></li>
+                <li><a class='dropdown-item' href='/ko/'>KO 한국어</a></li>
+                <li><a class='dropdown-item' href='/cn/'>CN 简体中文</a></li>
+                <li><a class='dropdown-item' href='/ja/'>JA Japanese</a></li>
+                <li><a class='dropdown-item' href='/es/'>ES Spanish</a></li>
+                <li><a class='dropdown-item' href='/de/'>DE Deutsch</a></li>
+                <li><a class='dropdown-item' href='/fr/'>FR Français</a></li>
+                <li><a class='dropdown-item' href='/it/'>IT Italian</a></li>
+                <li><a class='dropdown-item' href='/pt/'>PT Português</a></li>
+                <li><a class='dropdown-item' href='/ru/'>RU Русский</a></li>
+                <li><a class="dropdown-item" href="/th/">TH ภาษาไทย</a></li>
+                <li><a class="dropdown-item" href="/id/">ID Indonesian</a></li>
+                <li><a class="dropdown-item" href="/pl/">PL Polish</a></li>
+                <li><a class="dropdown-item" href="/tr/">TR Turkish</a></li>
+                <li><a class="dropdown-item" href="/vi/">VI Vietnamese</a></li>
+                <li><a class="dropdown-item" href="/mx/">MX Spanish</a></li>
+              </ul>
+            </li>
+          </ul>
+    
+          <form class="d-flex" role="search" id="autocomplete">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="navautosearch">
+          </form>
+    
+        </div>
+      </div>
+    </nav>
+
+<script> sidebar160('leftside_banner', 'left'); </script>
+<script> sidebar160('rightside_banner', 'right'); </script>
+
+    <div class="page">
+    <div class="page-content container" role="main">
+        <div id="topbanner970"></div><script>topbanner970("topbanner970");</script>
+
+    <div   class='card mb-2 markdown'>
+    
+    <div  class='collapse show'>
+     <div class='card-body clearfix'><h1 id="version-v072">Version v0.7.2</h1>
+<p>2026/2/16</p>
+<h2 id="balance-adjustments">Balance Adjustments</h2>
+<ul>
+<li>Added rarity variations for melee weapons (<a class="itemname" data-hover="?s=Items%2FSword_5" href="Sword"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Weapon_Sword.webp" class="size24 border bg_rarity4"/>Sword</a>s, <a class="itemname" data-hover="?s=Items%2FKatana_5" href="Katana"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Weapon_Katana.webp" class="size24 border bg_rarity4"/>Katana</a>s, <a class="itemname" data-hover="?s=Items%2FBeamSword_5" href="Beam_Sword"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Weapon_BeamSword.webp" class="size24 border bg_rarity4"/>Beam Sword</a>s, <a class="itemname" data-hover="?s=Items%2FSpear_ForestBoss_5" href="Lilys_Spear"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Weapon_Spear_ForestBoss.webp" class="size24 border bg_rarity4"/>Lily&#39;s Spear</a>).</li>
+<li>[Steam] Added a Debug Mod that allows constant updates for mod development.</li>
+</ul>
+<h2 id="bug-fixes">Bug Fixes</h2>
+<ul>
+<li>Fixed an issue where the display would appear misaligned when placing Japanese-style buildings in certain placements.</li>
+<li>Fixed an issue where <a class="itemname " data-hover="?s=MapObjects%2FPalBoxV2" href="Palbox"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/BuildObject/PNG/T_icon_buildObject_PalBoxV2.webp" class="size24"/>Palbox</a>es could be placed on top of some buildings under certain conditions.</li>
+<li>Fixed an issue where some raid bosses would appear stuck underground in the raid batlefield and still be able to attack.</li>
+<li>[Steam] Fixed an issue where some mods would not work properly on Wine/Proton.</li>
+<li>Other minor bug fixes.</li>
+</ul>
+</div>  
+    </div>
+</div><div   class='card mb-2 markdown'>
+    
+    <div  class='collapse show'>
+     <div class='card-body clearfix'><h1 id="patch-note-v071">Patch Note v0.7.1</h1>
+<p>2026/1/21</p>
+<h2 id="balance-adjustments">Balance Adjustments</h2>
+<ul>
+<li>In PvP, the on-screen raid log will now continue to be displayed while your base is under attack from other players.</li>
+<li>The <a class="itemname " data-hover="/cache/en/Game_MapObjects_hover/0d3b46da335c05eaa9b03ed29f9100f79ad3f8dff8ea62fa04ef3a68badeb1fb" href="Summoning_Altar"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/BuildObject/PNG/T_icon_buildObject_Altar.webp" class="size24"/>Summoning Altar</a> at your base will no longer be destroyed at the end of the raids inside the raid area.</li>
+<li>Reduce the recovery time between swings for melee weapons (Swords, Katana, Beam Swords).</li>
+<li>Increased the attack range of melee weapons (<a class="itemname" data-hover="?s=Items%2FSword_5" href="Sword"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Weapon_Sword.webp" class="size24 border bg_rarity4"/>Sword</a>s, <a class="itemname" data-hover="?s=Items%2FKatana_5" href="Katana"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Weapon_Katana.webp" class="size24 border bg_rarity4"/>Katana</a>, <a class="itemname" data-hover="?s=Items%2FBeamSword_5" href="Beam_Sword"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Weapon_BeamSword.webp" class="size24 border bg_rarity4"/>Beam Sword</a>s).</li>
+</ul>
+<h2 id="bug-fixes">Bug Fixes</h2>
+<ul>
+<li>Fixed an issue where mods would still function when enabled in their individual settings even when &quot;Allow Mod Use&quot; was turned off in the Mod Management menu.</li>
+<li>Fixed an issue where attack notifications would not appear when another player approached your base while riding a Pal in PvP.</li>
+<li>Fixed an issue where <a class="itemname d-inline-block" data-hover="/cache/en/Game_Pals_hover/b429aa32cb51d129fec2c4d4c53f6a07b5d2a24cf77dc7f9bdd4198ba515a649" href="Hartalis"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/PalIcon/Normal/T_LegendDeer_icon_normal.webp" class="size24 rounded-circle border"/>Hartalis</a> &quot;<strong>Sacred Barrier</strong>&quot; was not properly blocking the Oil Rig&#39;s anti-aircraft laser.</li>
+<li>Fixed an issue where working Pals would sometimes freeze in combat mode during raid boss battles and not engage in combat.</li>
+<li>Fixed an issue where <a class="itemname" data-hover="?s=Items%2FFruit_hp_01" href="Life_Fruit"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Food_Fruit_hp_01.webp" class="size24 border bg_rarity4"/>Life Fruit</a>, <a class="itemname" data-hover="?s=Items%2FFruit_attack_01" href="Power_Fruit"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Food_Fruit_attack_01.webp" class="size24 border bg_rarity4"/>Power Fruit</a> and <a class="itemname" data-hover="?s=Items%2FFruit__defense_01" href="Stout_Fruit"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Food_Fruit__defense_01.webp" class="size24 border bg_rarity4"/>Stout Fruit</a> would not be rewarded when clearing the <a class="itemname d-inline-block" data-hover="/cache/en/Game_Pals_hover/b429aa32cb51d129fec2c4d4c53f6a07b5d2a24cf77dc7f9bdd4198ba515a649" href="Hartalis"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/PalIcon/Normal/T_LegendDeer_icon_normal.webp" class="size24 rounded-circle border"/>Hartalis</a> raid boss on &quot;Extreme&quot; difficulty.</li>
+<li>Fixed an issue where players would die while on water after leaving a dungeon and before landing, causing their inventory and Pals to be dropped back into the dungeon.</li>
+<li>Fixed an issue where Pals consumed in a <a class="itemname " data-hover="?s=MapObjects%2FCharacterRankUp" href="Pal_Essence_Condenser"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/BuildObject/PNG/T_icon_buildObject_CharacterRankUp.webp" class="size24"/>Pal Essence Condenser</a> would disappear after a short time had passed since being restored from the <a class="itemname " data-hover="?s=MapObjects%2FGlobalPalStorage" href="Global_Palbox"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/BuildObject/PNG/T_icon_buildObject_GlobalPalStorage.webp" class="size24"/>Global Palbox</a>.</li>
+<li>Fixed an issue where Wall Signs would be placed embedded into certain buildings when constructed on them.</li>
+<li>Fixed an issue where the graphics of some building materials and equipment would not be rendered correctly.</li>
+<li>Fixed an issue where some background music and sound effects would continue to play or would play in the wrong place.</li>
+<li>[Steam] Fixed an issue where the achievement &quot;Alpha Pal Slayer&quot; would not be unlocked correctly.</li>
+<li>Other minor bugs fixes.</li>
+</ul>
+</div>  
+    </div>
+</div><div   class='card mb-2 markdown'>
+    
+    <div  class='collapse show'>
+     <div class='card-body clearfix'><h1 id="version-v070-home-sweet-home">Version v0.7.0: Home Sweet Home</h1>
+<p>2025/12/17</p>
+<h2 id="ultrakill-collab">ULTRAKILL Collab!</h2>
+<ul>
+<li>Added <a class="itemname" data-hover="/cache/en/Game_Items_hover/a717047692d88e13b651b13c63b4b072d857f379e2e35112c309af6d1f818298" href="V1_Armor"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Armor_Octavia001_Armor.webp" class="size24 border bg_rarity4"/>V1 Armor</a> and <a class="itemname" data-hover="/cache/en/Game_Items_hover/86c963e0ccbbae13da395451fbed91a2d2c5acddcf6ac7c2a667579931b1aa6b" href="V2_Armor"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Armor_Octavia002_Armor.webp" class="size24 border bg_rarity4"/>V2 Armor</a> sets! Terrorize the Palpagos Islands as your favorite blood-fueled robot!<ul>
+<li><a class="itemname" data-hover="/cache/en/Game_Items_hover/a717047692d88e13b651b13c63b4b072d857f379e2e35112c309af6d1f818298" href="V1_Armor"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Armor_Octavia001_Armor.webp" class="size24 border bg_rarity4"/>V1 Armor</a>: Normal from Technology Lv.32, Legendary from <a class="itemname" data-hover="/cache/en/Game_Items_hover/dbaa1a9902fcc196894263e24f535b28237d709a6e7e1a57fcea279efbb25127" href="Dog_Coin"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_DogCoin.webp" class="size24 border bg_rarity3"/>Dog Coin</a> vendor</li>
+<li><a class="itemname" data-hover="/cache/en/Game_Items_hover/86c963e0ccbbae13da395451fbed91a2d2c5acddcf6ac7c2a667579931b1aa6b" href="V2_Armor"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Armor_Octavia002_Armor.webp" class="size24 border bg_rarity4"/>V2 Armor</a>: Normal from Technology Lv.56, Legendary from<a class="itemname" data-hover="/cache/en/Game_Items_hover/dbaa1a9902fcc196894263e24f535b28237d709a6e7e1a57fcea279efbb25127" href="Dog_Coin"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_DogCoin.webp" class="size24 border bg_rarity3"/>Dog Coin</a> vendor</li>
+</ul>
+</li>
+<li>Added a pair of iconic weapons from ULTRAKILL!<ul>
+<li><a class="itemname" data-hover="?s=Items%2FOctaviaRevolver_5" href="Marksman_Revolver"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Weapon_OctaviaRevolver.webp" class="size24 border bg_rarity4"/>Marksman Revolver</a>: Normal from Technology Lv.32, Legendary from <a href="Arena">Arena</a> vendor</li>
+<li><a class="itemname" data-hover="/cache/en/Game_Items_hover/41470da9c495af592ed27c2324c6f89cd8db5a6a315947c106e8182d4e1d0b2d" href="Core_Eject_Shotgun"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Weapon_OctaviaShotgun.webp" class="size24 border bg_rarity4"/>Core Eject Shotgun</a>: Normal from Technology Lv.56, Legendary from <a href="Arena">Arena</a> vendor</li>
+</ul>
+</li>
+<li>Unique Mechanic - Coin Toss<ul>
+<li>Throw coins (Hotkey: E) while using the Marksman Revolver to perform a Ricoshot! Bullets will ricochet off the thrown coin and deal devastating damage to nearby targets!</li>
+</ul>
+</li>
+</ul>
+<p><a data-lightbox="panel" href="https://clan.fastly.steamstatic.com/images//40671762/9aeaf159f1fbb7960102a107fcc5d9c3ab109512.jpg"></a></p>
+<h2 id="base-building-improvements">Base Building Improvements</h2>
+<ul>
+<li>Added 48 new building parts, including triangular pieces!</li>
+<li>Added the ability to change the color (Hotkey: P) of some buildings and foundations!</li>
+<li>Changed the building UI to a list-based system.</li>
+</ul>
+<p><a data-lightbox="panel" href="https://clan.fastly.steamstatic.com/images//40671762/938144c1a50616e9963aeb0b4a85f7cb5032b2d1.jpg"></a>
+<a data-lightbox="panel" href="https://clan.fastly.steamstatic.com/images//40671762/e097712a303304068e3c99d7843406a42bd72031.jpg"></a>
+<a data-lightbox="panel" href="https://clan.fastly.steamstatic.com/images//40671762/abf103c9e78de775fb1017254e9b088213efef99.jpg"></a></p>
+<h2 id="raid-boss-improvements">Raid Boss Improvements</h2>
+<ul>
+<li>Added a new raid boss!<ul>
+<li>Combine <a class="itemname" data-hover="/cache/en/Game_Items_hover/0990c05b5371ad48025e3a65783044bb299fba5c27f0a8f4bdfb4a578cdd0d4d" href="Hartalis_Slab_Fragment"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Blueprint_PalSummon_LegendDeer_Parts.webp" class="size24 border bg_rarity1"/>Hartalis Slab Fragment</a>x4 to <a class="itemname" data-hover="/cache/en/Game_Items_hover/4e626d6e3f19aaf0fbbf26ddbe1f489d04d8a6735c63ac6936754d70ab9b04fe" href="Hartalis_Slab"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Consume_PalSummon_LegendDeer.webp" class="size24 border bg_rarity3"/>Hartalis Slab</a></li>
+<li><a class="itemname" data-hover="/cache/en/Game_Items_hover/4e626d6e3f19aaf0fbbf26ddbe1f489d04d8a6735c63ac6936754d70ab9b04fe" href="Hartalis_Slab"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Consume_PalSummon_LegendDeer.webp" class="size24 border bg_rarity3"/>Hartalis Slab</a>: <a class="itemname d-inline-block" data-hover="/cache/en/Game_Pals_hover/01c06f9ff9a9fed096b29c74da7f867cd90d76d6fc86e67f4635ffe9cce9e5df" href="King_of_Salvation_Hartalis"><span class="size24 palRaid"></span><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/PalIcon/Normal/T_LegendDeer_icon_normal.webp" class="size24 rounded-circle border border-info"/>King of Salvation Hartalis</a></li>
+<li><a class="itemname" data-hover="/cache/en/Game_Items_hover/247349e2c9781b3ab4627fed641f5d7c63b1f07fefb1bdad94db0d8accffabd2" href="Hartalis_%28Ultra%29_Slab"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Consume_PalSummon_LegendDeer_2.webp" class="size24 border bg_rarity4"/>Hartalis (Ultra) Slab</a>: <a class="itemname d-inline-block" data-hover="/cache/en/Game_Pals_hover/d218abebc9fbf07488b1dd06ca0cbdd274d68f375832b49c228b6e02d8d89f6b" href="King_of_Salvation_%28Ultra%29_Hartalis"><span class="size24 palRaid"></span><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/PalIcon/Normal/T_LegendDeer_icon_normal.webp" class="size24 rounded-circle border border-info"/>King of Salvation (Ultra) Hartalis</a></li>
+</ul>
+</li>
+<li>Added a new battlefield for raid bosses. Players can now choose to challenge raid bosses in their base or in a new separate battlefield.</li>
+</ul>
+<p><a data-lightbox="panel" href="https://clan.fastly.steamstatic.com/images//40671762/944e272e2785ae34f2431654e900f18b6407d617.jpg"></a>
+<a data-lightbox="panel" href="https://clan.fastly.steamstatic.com/images//40671762/f6dd1bb7cda1e429f27d5339bd465d32abaad389.jpg"></a></p>
+<h2 id="melee-combat-improvements">Melee Combat Improvements</h2>
+<ul>
+<li>Improved the melee gameplay for swords, katanas and beam swords. Pressing left click (right trigger) will perform a new consecutive combo attack. </li>
+<li>Special attacks have been added to the katana and beam sword. Holding either left or right click (left or right trigger) will activate these abilities.</li>
+</ul>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hLUWtTwER28?si=c-whyUBSm7XLNv4G" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<h2 id="new-features">New Features</h2>
+<ul>
+<li>Added PvP functionality (Experimental!).</li>
+<li>[PC - Steam Only] Added Steam Workshop, allowing players to download and use mods.</li>
+</ul>
+<p><a data-lightbox="panel" href="https://clan.fastly.steamstatic.com/images//40671762/6e8171bc0143fdbca61618de0c0f400a2b312fb9.jpg"></a>
+<a data-lightbox="panel" href="https://clan.fastly.steamstatic.com/images//40671762/7bbd72cfec9a1e584014f66986961b24074f4af1.jpg"></a></p>
+<h2 id="mechanic-adjustments">Mechanic Adjustments</h2>
+<ul>
+<li>When placing a building, an arrow indicating the building&#39;s orientation will now be displayed.</li>
+<li>When placing a building, buildings with a set work location will now display a Cattiva icon indicating the work location.</li>
+<li>Adjusted the Palbox so it can be aligned with foundations and roofs. </li>
+<li>[Keyboard &amp; Mouse Controls] Building controls have been made more intuitive, and continuous building has been changed to the default setting.</li>
+</ul>
+<h2 id="balance-adjustments">Balance Adjustments</h2>
+<ul>
+<li>Added new implants to the <a class="itemname " data-hover="/cache/en/Game_MapObjects_hover/a424c63a692d35934ef9279cbde86fe960187e9adf56016ce51d67a139ef4b5f" href="Pal_Surgery_Table"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/BuildObject/PNG/T_icon_buildObject_OperatingTable.webp" class="size24"/>Pal Surgery Table</a>(built in):<ul>
+<li><a href="Passive_Skills" class="itemname d-inline-block" data-hover="?s=PassiveSkills%2FTrainerMining_up1">Mine Foreman</a></li>
+<li><a href="Passive_Skills" class="itemname d-inline-block" data-hover="?s=PassiveSkills%2FTrainerLogging_up1">Logging Foreman</a></li>
+<li><a href="Passive_Skills" class="itemname d-inline-block" data-hover="?s=PassiveSkills%2FSalePrice_Up_2">Fine Furs</a></li>
+<li><a href="Passive_Skills" class="itemname d-inline-block" data-hover="?s=PassiveSkills%2FSwimSpeed_up_1">Sleek Stroke</a></li>
+<li><a href="Passive_Skills" class="itemname d-inline-block" data-hover="?s=PassiveSkills%2FPAL_CorporateSlave">Work Slave</a></li>
+</ul>
+</li>
+<li>You can now get a <a class="itemname" data-hover="/cache/en/Game_Items_hover/3b7d791e06d9aac83849629a32a910d27f8df6378cd3356e411f07fb71bca0f5" href="Little_Kinship_Peach"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Consume_AffectionFruit_01.webp" class="size24 border bg_rarity2"/>Little Kinship Peach</a> from a Pal when freeing them from an enemy camp.</li>
+<li>The last hit done to an enemy while using mercy will now display &quot;&quot;MERCY HIT&quot;&quot; to indicate that no damage was done.</li>
+<li>Changed specifications so that all Pals will no longer lose SAN when taking damage.</li>
+<li>Reduced the impact of bad status effects:<ul>
+<li>Hungry... Attack, Defense, Work Speed -20% → -10%</li>
+<li>Starving... Attack, Defense, Work Speed -50% → -20%</li>
+<li>Cold... Work Speed -10% → -5%</li>
+<li>Sprain... Movement Speed -10% → -5%</li>
+<li>Overfull... Increased hunger loss rate by 100% → +50%</li>
+<li>Ulcer... Work Speed -20%, Movement Speed -10% → Work Speed -10%, Movement Speed -5%</li>
+<li>Fracture... Work Speed -10%, Movement Speed -20% → Work Speed -5%, Movement Speed -10%</li>
+<li>Weakened... Work Speed -20%, Movement Speed -30% → Work Speed -10%, Movement Speed -20%</li>
+<li>Depressed... -30% Work Speed, -20% Movement Speed → -20% Work Speed, -10% Movement Speed</li>
+</ul>
+</li>
+<li>Changed the attribute of the <a class="itemname d-inline-block" data-hover="/cache/en/Game_Pals_hover/bae62cf5674c996326f9d8541e4965c319ed2d909a1f34fa23b609dc58855bff" href="Broncherry"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/PalIcon/Normal/T_SakuraSaurus_icon_normal.webp" class="size24 rounded-circle border"/>Broncherry</a>&#39;s unique skill &quot;<strong>Body Smash</strong>&quot; from neutral to the grass.</li>
+<li>Changed the attribute of <a class="itemname d-inline-block" data-hover="/cache/en/Game_Pals_hover/ae2b703887d99b9432ad25dd4ddc3335b68b380a3975dc5d8301d205cad46177" href="Rushoar"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/PalIcon/Normal/T_Boar_icon_normal.webp" class="size24 rounded-circle border"/>Rushoar</a>&#39;s unique skill &quot;<strong>Heavy Charge</strong>&quot; from neutral to earth.</li>
+<li>Added &quot;Item Decay Speed Multiplier&quot; to the Options Settings.</li>
+<li>[Dedicated Servers] Police NPCs targeting players who have committed crimes will now only deal damage to the target player and their guild.</li>
+<li>The appearance of the work aptitude icon has been changed.</li>
+</ul>
+<h2 id="bug-fixes">Bug Fixes</h2>
+<ul>
+<li>Fixed an issue where <a class="itemname d-inline-block" data-hover="/cache/en/Game_Pals_hover/55f71310724fee4245d5b058f4c5c598d4fa200217d00692d0d62eaeafff5e1a" href="Flopie"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/PalIcon/Normal/T_FlowerRabbit_icon_normal.webp" class="size24 rounded-circle border"/>Flopie</a> would not collect dropped items in the field while her partner skill &quot;<strong>Helper Bunny</strong>&quot; was active. </li>
+<li>Improved Pal pathfinding AI to make it easier to reach the target location within the base.</li>
+<li>Fixed an issue where summoned Pals would attack visitors when set to &quot;attack aggressively.&quot;</li>
+<li>Fixed an issue where attacking visitors in your base would not result in the correct attacking state. </li>
+<li>Many other minor bug fixes.</li>
+</ul>
+<h2 id="unlisted-changes">Unlisted Changes</h2>
+<ul>
+<li>Flying pals now have a &#39;gliding&#39; animation when flying downwards. (only the ones with wings, NOT Jetragon or Xenolord)</li>
+<li><a class="itemname d-inline-block" data-hover="/cache/en/Game_Pals_hover/50ad219c31e36411425b38935d9c37cd563f98af86abc07992066df4f17c8ec9" href="Chillet"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/PalIcon/Normal/T_WeaselDragon_icon_normal.webp" class="size24 rounded-circle border"/>Chillet</a>&#39;s walk has been changed to be bipedal instead of quadrupedal.</li>
+<li>Pals no longer recover instantly from sleeping in beds (including pods.) This makes &#39;rescue pals&#39; once again useless.</li>
+</ul>
+</div>  
+    </div>
+</div><div   class='card mb-2 markdown'>
+    
+    <div  class='collapse show'>
+     <div class='card-body clearfix'><h5><span data-i18n-tw="內容">Content</span> <span data-i18n-tw="更新">Update</span></h5>
+
+<div class="row row-cols-1 row-cols-lg-3 g-2">
+
+<div class="col">
+    <div class="card">
+        <a href="v0.7.0"><img loading="lazy" class="card-img-top" src="https://clan.fastly.steamstatic.com/images/40671762/21efd33714f5cebcc762092e2e80c66df6348c41_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="v0.7.0" data-i18n-tw="心歸之所">Home Sweet Home</a></h5>
+            <p class="card-text" data-i18n-tw="">Palworld v0.7: ULTRAKILL Collaboration!</p>
+            <div class="card-text d-flex justify-content-between">
+                <div class="text-info" data-countdown="1765940490" data-format="day"></div>
+                <small class="text-muted">2025/12/17 03:01:04 UTC</small></div>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="card">
+        <a href="Tides_of_Terraria"><img loading="lazy" class="card-img-top" src="https://clan.fastly.steamstatic.com/images/40671762/7f4f43a52e9818e13258581367b218482e08e8c6_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="Tides_of_Terraria" data-i18n-tw="潮起泰拉瑞亞">Tides of Terraria</a></h5>
+            <p class="card-text" data-i18n-tw="v0.6：在泰拉瑞亞世界展開冒險的大規模合作！還有「釣魚」「打撈」等多種新要素的追加！">Palworld v0.6.0: Tides of Terraria has been released!</p>
+            <div class="card-text d-flex justify-content-between">
+                <small class="text-muted">2025/06/25 03:01:30 UTC</small></div>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="card">
+        <a href="Crossplay"><img loading="lazy" class="card-img-top" src="https://clan.fastly.steamstatic.com/images/40671762/e829a69a3cb2b34668f7278a412074412a738ffe_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="Crossplay" data-i18n-tw="跨平台遊玩">Crossplay</a></h5>
+            <p class="card-text" data-i18n-tw="v0.5: 在遊戲發布的所有平台間可進行跨平台遊玩！及其他多種新功能的追加！">v0.5: Play across all platforms, Global Palbox and more!</p>
+            <div class="card-text d-flex flex-row-reverse">
+                <small class="text-muted">2025/03/19 03:01:18 UTC</small></div>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="card">
+        <a href="Feybreak"><img loading="lazy" class="card-img-top" src="https://clan.fastly.steamstatic.com/images/40671762/925617086091c1a66aff8d5ea3fca00381e95e81_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="Feybreak" data-i18n-tw="天墜之地">Feybreak</a></h5>
+            <p class="card-text" data-i18n-tw="v0.4：新區域，新帕魯，新建築，遠徵，研究，硬核模式等等，追加大量新要素的大型更新！">v0.4: New Island, Pals, features and more!</p>
+            <div class="card-text d-flex flex-row-reverse">
+                <small class="text-muted">2024/12/23 02:04:25 UTC</small></div>
+            <!--<div data-countdown="1719460800" data-format="day"></div>-->
+            <!--<div class="card-text d-flex justify-content-between">
+                <div class="text-info" data-countdown="1734919764" data-format="day"></div>
+                <small class="text-muted">2024/12/23</small></div>-->
+        </div>
+    </div>
+</div>
+
+
+<div class="col">
+    <div class="card">
+        <a href="Sakurajima"><img loading="lazy" class="card-img-top" src="https://clan.akamai.steamstatic.com/images/40671762/ef6d5a64f69cee213c4225ac7f855500fff79a43_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="Sakurajima" data-i18n-tw="櫻島">Sakurajima</a></h5>
+            <p class="card-text" data-i18n-tw="v0.3.1：超大型更新，增加了新區域、新帕魯、新建築、競技場等大量新元素！">v0.3.1.: New area, Pals, buildings and more!</p>
+            <!--<div data-countdown="1719460800" data-format="day"></div>-->
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/06/27 02:55:59 UTC</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="card">
+        <a href="Raid#Raid"><img loading="lazy" class="card-img-top" src="https://clan.akamai.steamstatic.com/images/40671762/eb890a794f175c4a7ad5c6b0daa3eb4b644dd5ab_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="Raid#Raid" data-i18n-tw="襲擊頭目">Raid Boss</a></h5>
+            <p class="card-text">Raid Boss “Bellanoir”! New content, improved building and more!</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/04/04 04:04:22 UTC</small></p>
+        </div>
+    </div>
+</div>
+
+
+<div class="col">
+    <div class="card">
+        <a href=""><img loading="lazy" class="card-img-top" src="https://clan.fastly.steamstatic.com/images/40671762/d3777d20de12c17be728e1e15cf948144abbb26e_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="" data-i18n-tw="開售搶先體驗">Early access starts!</a></h5>
+            <p class="card-text" data-i18n-tw="帕魯和領域Boss集結亮相的最新發售日預告片現已公開！">The latest trailer featuring Pals and field bosses has been released!</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/01/19 07:59:40 UTC</small></p>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+<h5 class="mt-4"><span data-i18n-tw="新聞">News</span> <span>Patch</span></h5>
+
+<div class="row row-cols-1 row-cols-lg-3 g-2">
+
+<div class="col">
+    <div class="card">
+        <a href="v0.6.8"><img loading="lazy" class="card-img-top" src="https://clan.fastly.steamstatic.com/images/40671762/f3738119fc68c24e8fa3b7dd7b83b254d32e4b64_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="v0.6.8" data-i18n-tw="版本更新 v0.6.8">Patch Notes v0.6.8</a></h5>
+            <p class="card-text" data-i18n-tw="追加萬聖節任務！來獲取佐伊的萬聖節服裝及瞅什魔玩偶服吧！">Halloween! Zoe's Halloween costume and Depresso suit!</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2025/10/23</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="card">
+        <a href="v0.4.15"><img loading="lazy" class="card-img-top" src="https://clan.fastly.steamstatic.com/images/40671762/7244d18fed6092767869b353bf16ff5dbaa93b8c_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="v0.4.15" data-i18n-tw="版本更新 v0.4.15">Patch Notes v0.4.15</a></h5>
+            <p class="card-text" data-i18n-tw="隨機帕魯模式全新改版！以及其他問題修正措施">Random Pal mode rework! Bug fixes!</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2025/02/20</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="card">
+        <a href="v0.4.14"><img loading="lazy" class="card-img-top" src="https://clan.fastly.steamstatic.com/images/40671762/43bf99f37f6f7df11d27af1d534106a628ae89b8_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="v0.4.14" data-i18n-tw="版本更新 v0.4.14">Patch Notes v0.4.14</a></h5>
+            <p class="card-text" data-i18n-tw="發給全體玩家5種春節外觀！以及一些平衡調整與問題修正">Spring Festival skins! Balance adjustments and bug fixes!</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2025/01/24</small></p>
+        </div>
+    </div>
+</div>
+
+
+<div class="col">
+    <div class="card">
+        <a href="Roadmap"><img loading="lazy" class="card-img-top" src="https://clan.fastly.steamstatic.com/images/40671762/7d457bb20fefc79f48a4b62393de5124ac6fe5d1_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="Roadmap">Roadmap</a></h5>
+            <p class="card-text">Celebrating Palworld’s first anniversary! Future roadmap revealed!</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2025/01/19</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="card">
+        <a href="v0.3.10"><img loading="lazy" class="card-img-top" src="https://clan.fastly.steamstatic.com/images/40671762/62e5282cf21ee39f5d423106e820a7191d6f85ae_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="v0.3.10" data-i18n-tw="版本更新 v0.3.10">Patch Notes v0.3.10</a></h5>
+            <p class="card-text" data-i18n-tw="版本更新v0.3.10：贈送4種萬聖節造型給所有玩家！和一些問題的修正">Update v0.3.10: Free Halloween skins and bug fixes!</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/10/30</small></p>
+        </div>
+    </div>
+</div>
+
+
+<div class="col">
+    <div class="card">
+        <a href="v0.3.5"><img loading="lazy" class="card-img-top" src="https://clan.akamai.steamstatic.com/images/40671762/28c460e88a58b58294112b1babe1f3c67f636dab_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="v0.3.5" data-i18n-tw="版本更新 v0.3.5">Patch Notes v0.3.5</a></h5>
+            <p class="card-text" data-i18n-tw="更新 v0.3.5：針對據點內卡住通知頻繁度的降低和其他問題的修正">Update v0.3.5: Notification frequency reduced and bug fixes</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/08/07</small></p>
+        </div>
+    </div>
+</div>
+
+
+
+<!--
+<div class="col">
+    <div class="card">
+        <img loading="lazy" class="card-img-top" src="https://cdn.paldb.cc/image/Pal/Texture/HelpGuide/T_HelpGuide_3.webp">
+        <div class="card-body">
+            <h5 class="card-title" data-i18n-tw="官方伺服器 8 月 1 日重置">Official server wipe at August 1st</h5>
+            <p class="card-text">The official servers are currently being operated on a trial basis. The next scheduled wipe is August 1st at 00:00 (JST). The period until the next wipe may be extended depending on the server status. If no guild members log in for 48 hours, items belonging to that guild, buildings, and pals placed in bases will be deleted. The difficulty is normal, and the egg incubation time is 24 hours. Regular restarts will take place at 2:00, 6:00, 10:00, 14:00, 18:00 and 22:00.</p>
+            <div data-countdown="1722438000" data-format="day"></div>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/08/01</small></p>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="col">
+    <div class="card">
+        <a href="v0.3.4"><img loading="lazy" class="card-img-top" src="https://clan.akamai.steamstatic.com/images/40671762/99296d64641b4f2d64faca0cc73c0e434dcc068d_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="v0.3.4" data-i18n-tw="版本更新 v0.3.4">Patch Notes v0.3.4</a></h5>
+            <p class="card-text" data-i18n-tw="更新 v0.3.4：新增隕石＆補給物資的空投間隔設定！並實作其他平衡調整類別的修改">Update v0.3.4: Meteorite and supply drop settings! Balance adjustments and more!</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/07/29</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="card">
+        <a href="Sakurajima"><img loading="lazy" class="card-img-top" src="https://clan.akamai.steamstatic.com/images/40671762/ef6d5a64f69cee213c4225ac7f855500fff79a43_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="Sakurajima" data-i18n-tw="版本更新 v0.3.1">Patch Notes v0.3.1</a></h5>
+            <p class="card-text" data-i18n-tw="櫻島更新v0.3.1：超大型更新，增加了新區域、新帕魯、新建築、競技場等大量新元素！">Major update! Sakurajima v0.3.1.: New area, Pals, buildings and more!</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/06/27</small></p>
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="col">
+    <div class="card">
+        <a target="_blank" href="https://www.summergamefest.com/"><img loading="lazy" class="card-img-top" src="https://pbs.twimg.com/media/GNxZGlfa0AAq3_q?format=jpg&name=medium"></a>
+        <div class="card-body">
+            <h5 class="card-title" data-i18n-tw="幻獸帕魯將參加 6 月 8 日夏日遊戲節">Palworld will be at <a href="https://www.summergamefest.com/" target="_blank">Summer Game Fest!</a></h5>
+            <p class="card-text" data-i18n-tw="我們有非常多令人興奮的事情要宣布，包含一些玩家期待已久的功能！">We have a LOT of exciting things to reveal including some long awaited features!🔥 <br>You don't want to miss this!  <br> <br>Make sure you and your Pals check it out!👀</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/05/17</small></p>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="col">
+    <div class="card">
+        <img loading="lazy" class="card-img-top" src="https://clan.akamai.steamstatic.com/images/40671762/57ad831ded09ba9f5c02dd4c425dd552caa4d851.png">
+        <div class="card-body">
+            <h5 class="card-title" data-i18n-tw="幻獸帕魯上架 GeForce NOW!">Palworld is now available on GeForce NOW!</h5>
+            <p class="card-text">Stream and play Palworld anywhere you want with the power of <a target="_blank" href="https://www.nvidia.com/en-us/geforce-now/">GeForce NOW</a>!  <br>Explore the world of Palworld by yourself or in multiplayer with friends and family!</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/05/17</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="card">
+        <a href="v0.2.4.0"><img loading="lazy" class="card-img-top" src="https://clan.akamai.steamstatic.com/images/40671762/824a68093ff6f52885cdbb15ee47e211afe450bc_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="v0.2.4.0" data-i18n-tw="版本更新 v0.2.4.0">Patch Notes v0.2.4.0</a></h5>
+            <p class="card-text" data-i18n-tw="現在配種牧場生下的蛋將有機率孵化出阿爾法帕魯">Alpha Pal breeding and more!</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/05/14</small></p>
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="col">
+    <div class="card">
+        <a href="#" class="js-modal-btn card-img-top" data-video-id="RrrRs7-gpzg"></a>
+        <div class="card-body">
+            <h5 class="card-title" data-i18n-tw="新品種帕魯的介紹影片">New Pals Teaser</h5>
+            <p class="card-text">We revealed some new Pals coming this summer at the ID@Xbox Showcase!
+<br>We are planning to add many more new Pals  ✨
+<br>This is just a teaser of some that you will get to meet in an upcoming update!
+<br>
+<br>We hope you are looking forward to it!
+</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/04/30</small></p>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="col">
+    <div class="card">
+        <a href="v0.2.3.0"><img loading="lazy" class="card-img-top" src="https://clan.akamai.steamstatic.com/images/40671762/da1686a00207adf84c579bdc775ce270cdd31323_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="v0.2.3.0" data-i18n-tw="版本更新 v0.2.3.0">Patch Notes v0.2.3.0</a></h5>
+            <p class="card-text" data-i18n-tw="追加電能帕魯蛋孵化器的孵化速度增加到1.5倍的效果">Electric Egg Incubator speed buffed to 1.5, and more</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/04/22</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="card">
+        <a href="v0.2.2.0"><img loading="lazy" class="card-img-top" src="https://clan.akamai.steamstatic.com/images/40671762/b9c4be509080f2ed4e782babd9055bd34c29bf2d_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="v0.2.2.0" data-i18n-tw="版本更新 v0.2.2.0">Patch Notes v0.2.2.0</a></h5>
+            <p class="card-text" data-i18n-tw="關於帕魯的攻擊傷害等問題的修正">Fixed issues with Pal's attack damage, and more.</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/04/15</small></p>
+        </div>
+    </div>
+</div>
+
+
+<!--
+<div class="col">
+    <div class="card">
+        <a href="#" class="js-modal-btn card-img-top" data-video-id="VyjHs2KUFPc"></a>
+        <div class="card-body">
+            <h5 class="card-title" data-i18n-tw="帕魯競技場的預告影片!">We announced the Palworld arena! </h5>
+            <p class="card-text">Battle against other players, pitting both yourself and your pals against them 🔥</p>
+            <p class="card-text">Train the strongest Pals and defeat all your rivals 🥊</p>
+            <p class="card-text">The Pal Arena makes its way to Palworld in 2024 ⚔</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/04/11</small></p>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="col">
+    <div class="card">
+        <a href="v0.2.1.0"><img loading="lazy" class="card-img-top" src="https://clan.akamai.steamstatic.com/images/40671762/4a3e1bb110761065bafabb73aff60b496b08ad8d_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="v0.2.1.0" data-i18n-tw="版本更新 v0.2.1.0">Patch Notes v0.2.1.0</a></h5>
+            <p class="card-text" data-i18n-tw="帕魯蛋無法放入孵化器的問題修正">Bug fixed where eggs could not be placed in the egg incubator</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/04/11</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="card">
+        <a href="v0.2.0.6"><img loading="lazy" class="card-img-top" src="https://clan.akamai.steamstatic.com/images/40671762/eb890a794f175c4a7ad5c6b0daa3eb4b644dd5ab_400x225.png"></a>
+        <div class="card-body">
+            <h5 class="card-title"><a href="v0.2.0.6" data-i18n-tw="版本更新 v0.2.0.6">Patch Notes v0.2.0.6</a></h5>
+            <p class="card-text">Raid Boss “Bellanoir”! New content, improved building and more!</p>
+            <p class="card-text d-flex flex-row-reverse"><small class="text-muted">2024/04/04</small></p>
+        </div>
+    </div>
+</div>
+
+
+
+</div>
+</div>  
+    </div>
+</div>
+    </div>
+    </div>
+
+    <footer class="text-center text-lg-left container mt-2">
+      <div class="card p-4">
+        <div class="row">
+
+          <div class="col-lg-3 col-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Sites</h5>
+            <ul class="list-unstyled mb-0">
+              <li> <a target="_blank" href="https://poedb.tw/">poedb.tw</a> </li>
+              <li> <a target="_blank" href="https://tlidb.com/">tlidb.com</a> </li>
+              <!--<li> <a target="_blank" href="https://diablo4.cc/">diablo4.cc</a> </li>-->
+              <li> <a target="_blank" href="https://poe2db.tw/">poe2db.tw</a> </li>
+              <li> <a target="_blank" href="https://paldb.cc/">paldb.cc</a> </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">About Site</h5>
+            <ul class="list-unstyled mb-0">
+              <li> <a href="privacy">Privacy</a> </li>
+              <li> <a target="_blank" href="https://www.reddit.com/user/chuanhsing">About US</a> </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Version</h5>
+            <ul class="list-unstyled mb-0">
+              <li> <a href="version">v0.7.1</a> 2026/1/21</li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Community</h5>
+            <ul class="list-unstyled mb-0">
+            </ul>
+          </div>
+
+        </div>
+      </div>
+      <div class="p-3">
+        <span>This site is fan-made and not affiliated with <a href="https://www.pocketpair.jp/" target="_blank">Pocketpair</a> in any way.</span>
+      </div>
+    </footer>
+
+    <a href="#top" id="toTop"><span class="fas fa-arrow-circle-up fa-3x"></span></a>
+
+    <script src="/js/footer.js?1771303867"></script>
+<script>
+$(document).ready(function()
+ {
+    if (window.location.hostname != "paldb.cc") {
+        window.location.href="https://paldb.cc/";
+    }
+ });
+</script>
+
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"ad52ef62a25e4a188cfdb0e6f473e83b","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+

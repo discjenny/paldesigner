@@ -1,0 +1,529 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Stone_Pit - Palworld Database Wiki</title>
+    <meta name="color-scheme" content="dark">
+    <link href="/favicon.ico" rel="icon" type="image/x-icon" >
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" crossorigin="anonymous"/>
+    <!--<link rel="stylesheet" href="https://cdn.paldb.cc/css/dataTables.bootstrap5.min.css" />-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.6.16/sweetalert2.min.css" integrity="sha512-NvuRGlPf6cHpxQqBGnPe7fPoACpyrjhlSNeXVUY7BZAj1nNhuNpRBq3osC4yr2vswUEuHq2HtCsY2vfLNCndYA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modal-video@2.4.6/css/modal-video.min.css" integrity="sha256-nd8IBqNn9uqwZKfZcLIXQcNxk5TjqrxiLx7PzN5PFW0=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/stdtheme.css?1771303867"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js" integrity="sha512-ToL6UYWePxjhDQKNioSi4AyJ5KkRxY+F1+Fi7Jgh0Hp5Kk2/s8FD7zusJDdonfe5B00Qw+B8taXxF6CFLnqNCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.paldb.cc/js/dataTables.bootstrap5.js?3"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js" integrity="sha512-lteuRD+aUENrZPTXWFRPTBcDDxIGWe5uu0apPEn+3ZKYDwDaEErIK9rvR0QzUGmUQ55KFE2RqGTVoZsKctGMVw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/@popperjs/core@2" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/tippy.js@6" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.6.16/sweetalert2.all.min.js" integrity="sha512-4tvE14sHIcdIHl/dUdMHp733PI6MpYA7BDnDfndQmx7aIovEkW+LfkonVO9+NPWP1jYzmrqXJMIT2tECv1TsEQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!--<script src="https://unpkg.com/mustache@latest" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/modal-video@2.4.6/js/modal-video.min.js" integrity="sha256-VqINwNxkS4VEDMq5O52YTckX+Mx84X6bafO8NxF21Xw=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.3.1/tinymce.min.js" integrity="sha512-eV68QXP3t5Jbsf18jfqT8xclEJSGvSK5uClUuqayUbF5IRK8e2/VSXIFHzEoBnNcvLBkHngnnd3CY7AFpUhF7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js" integrity="sha512-Ixzuzfxv1EqafeQlTCufWfaC6ful6WFqIz4G+dWvK0beHw0NVJwvCKSgafpy5gwNqKmgUfIBraVwkKI+Cz0SEQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/js/header.js?1771303867"></script>
+
+<meta property="og:title" content="Stone Pit" />
+<meta property="og:description" content="A facility for producing Stone.
+Mining Stone is hard work that requires much physical endurance.
+Leave it to Pals skilled at mining." />
+<meta property="og:image" content="https://cdn.paldb.cc/image/Pal/Texture/BuildObject/PNG/T_icon_buildObject_StonePit.webp" />
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2Z1WF1TB29"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-2Z1WF1TB29');
+</script>
+
+<script data-cfasync="false">window.nitroAds=window.nitroAds||{createAd:function(){return new Promise(e=>{window.nitroAds.queue.push(["createAd",arguments,e])})},addUserToken:function(){window.nitroAds.queue.push(["addUserToken",arguments])},queue:[]};</script>
+<script data-cfasync="false" async src="https://s.nitropay.com/ads-1818.js"></script>
+  </head>
+  <body>
+
+    <div id="consent-box" style="display:none">
+      <button onclick="window.__cmp('showModal');">
+        Update cookie preferences
+      </button>
+    </div>
+    
+    <script>
+      if (window["nitroAds"] && window["nitroAds"].loaded) {
+        document.getElementById("consent-box").style.display = window["__tcfapi"]
+          ? ""
+          : "none";
+      } else {
+        document.addEventListener(
+          "nitroAds.loaded",
+          () =>
+            (document.getElementById("consent-box").style.display = window["__tcfapi"]
+              ? ""
+              : "none")
+        );
+      }
+    </script>
+
+    <div class="background-image"></div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="/en/" data-i18n-tw="帕魯編年史">Paldb.cc</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="category_type_a_pal">
+                Pal
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Pals" data-i18n="category_type_a_pal">Pal</a></li>
+                <li><a class="dropdown-item" href="/en/Alpha_Pals" data-i18n="pal_box_sorttype_boss_flag">Alpha Pals</a></li>
+                <li><a class="dropdown-item" href="/en/Rampaging" data-i18n="predator_name">Rampaging</a></li>
+                <li><a class="dropdown-item" href="/en/Tower" data-i18n="map_filter_bosstower">Tower</a></li>
+                <li><a class="dropdown-item" href="/en/Raid" data-i18n="warning_invader_start_title">Raid</a></li>
+                <li><a class="dropdown-item" href="/en/Humans" data-i18n-tw="人類">Humans</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/en/Element_Swap" data-i18n-tw="攻擊賦予屬性">Element Swap</a></li>
+                <li><a class="dropdown-item" href="/en/Weight_Increase" data-i18n-tw="負重增加">Weight Increase</a></li>
+                <li><a class="dropdown-item" href="/en/Mounts" data-i18n-tw="坐騎">Mounts</a></li>
+                <li><a class="dropdown-item" href="/en/Glider" data-i18n="common_itemtype_a_glider">Glider</a></li>
+                <li><a class="dropdown-item" href="/en/Drop_Rate" data-i18n-tw="掉落倍率">Drop Rate</a></li>
+                <li><a class="dropdown-item" href="/en/Party_Buffs" data-i18n-tw="隊伍增益">Party Buffs</a></li>
+                <li><a class="dropdown-item" href="/en/Pal_Stats" data-i18n-tw="帕魯屬性">Pal Stats</a></li>
+                <li><a class="dropdown-item" href="/en/Spoiler">Spoiler</a></li>
+              </ul>
+            </li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="common_work_suitability">
+                Work Suitability
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Kindling"><img alt="T_icon_palwork_00" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_00.webp" height="24" /><span data-i18n="common_work_suitability_emitflame">Kindling</span></a></li>
+                <li><a class="dropdown-item" href="/en/Watering"><img alt="T_icon_palwork_01" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_01.webp" height="24" /><span data-i18n="common_work_suitability_watering">Watering</span></a></li>
+                <li><a class="dropdown-item" href="/en/Planting"><img alt="T_icon_palwork_02" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_02.webp" height="24" /><span data-i18n="common_work_suitability_seeding">Planting</span></a></li>
+                <li><a class="dropdown-item" href="/en/Generating_Electricity"><img alt="T_icon_palwork_03" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_03.webp" height="24"/><span data-i18n="common_work_suitability_generateelectricity">Generating Electricity</span></a></li>
+                <li><a class="dropdown-item" href="/en/Handiwork"><img alt="T_icon_palwork_04" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_04.webp" height="24" /><span data-i18n="common_work_suitability_handcraft">Handiwork</span></a></li>
+                <li><a class="dropdown-item" href="/en/Gathering"><img alt="T_icon_palwork_05" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_05.webp" height="24" /><span data-i18n="common_work_suitability_collection">Gathering</span></a></li>
+                <li><a class="dropdown-item" href="/en/Lumbering"><img alt="T_icon_palwork_06" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_06.webp" height="24" /><span data-i18n="common_work_suitability_deforest">Lumbering</span></a></li>
+                <li><a class="dropdown-item" href="/en/Mining"><img alt="T_icon_palwork_07" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_07.webp" height="24" /><span data-i18n="common_work_suitability_mining">Mining</span></a></li>
+                <li><a class="dropdown-item" href="/en/Medicine_Production"><img alt="T_icon_palwork_08" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_08.webp" height="24" /><span data-i18n="common_work_suitability_productmedicine">Medicine Production</span></a></li>
+                <!--<li><a class="dropdown-item" href="/en/Crude_oil_extraction"><img alt="T_icon_palwork_09" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_09.webp" height="24" /><span data-i18n="common_work_suitability_oilextraction">Crude oil extraction</span></a></li>-->
+                <li><a class="dropdown-item" href="/en/Cooling"><img alt="T_icon_palwork_10" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_10.webp" height="24"/><span data-i18n="common_work_suitability_cool">Cooling</span></a></li>
+                <li><a class="dropdown-item" href="/en/Transporting"><img alt="T_icon_palwork_11" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_11.webp" height="24" /><span data-i18n="common_work_suitability_transport">Transporting</span></a></li>
+                <li><a class="dropdown-item" href="/en/Farming"><img alt="T_icon_palwork_12" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_12.webp" height="24" /><span data-i18n="common_work_suitability_monsterfarm">Farming</span></a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/en/Work_Suitability" data-i18n="common_work_suitability">Work Suitability</a></li>
+                <li><a class="dropdown-item" href="/en/SAN">SAN</a></li>
+              </ul>
+            </li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n-tw="技能">
+                Skills
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Partner_Skill" data-i18n="common_coop_action">Partner Skill</a></li>
+                <li><a class="dropdown-item" href="/en/Active_Skills" data-i18n="common_active_skill">Active Skills</a></li>
+                <li><a class="dropdown-item" href="/en/Passive_Skills" data-i18n="common_characteristic">Passive Skills</a></li>
+                <li><a class="dropdown-item" href="/en/Skill_Fruit" data-i18n-tw="技能果實">Skill Fruit</a></li>
+              </ul>
+            </li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="ingame_main_menu_inventory">
+                Inventory
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Weapon" data-i18n="common_itemtype_a_weapon">Weapon</a></li>
+                <li><a class="dropdown-item" href="/en/Sphere" data-i18n="common_itemtype_a_specialweapon">Sphere</a></li>
+                <li><a class="dropdown-item" href="/en/Sphere_Module" data-i18n="common_itemtype_a_captureitemmodifier">Sphere Module</a></li>
+                <li><a class="dropdown-item" href="/en/Armor" data-i18n="common_itemtype_a_armor">Armor</a></li>
+                <li><a class="dropdown-item" href="/en/Accessory" data-i18n="common_itemtype_a_accessory">Accessory</a></li>
+                <li><a class="dropdown-item" href="/en/Material" data-i18n="common_itemtype_a_material">Material</a></li>
+                <li><a class="dropdown-item" href="/en/Consumable" data-i18n="common_itemtype_a_consume">Consumable</a></li>
+                <li><a class="dropdown-item" href="/en/Ammo" data-i18n="common_itemtype_a_ammo">Ammo</a></li>
+                <li><a class="dropdown-item" href="/en/Ingredient" data-i18n="common_itemtype_a_food">Ingredient</a></li>
+                <li><a class="dropdown-item" href="/en/Key_Items" data-i18n="common_itemtype_a_essential">Key Items</a></li>
+                <li><a class="dropdown-item" href="/en/Glider" data-i18n="common_itemtype_a_glider">Glider</a></li>
+                <li><a class="dropdown-item" href="/en/Schematic" data-i18n="common_itemtype_a_blueprint">Schematic</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/en/Chest_filters" data-i18n-tw="箱子篩選">Chest filters</a></li>
+                <li><a class="dropdown-item" href="/en/Legendary" data-i18n="rarity_legendary">Legendary</a></li>
+              </ul>
+            </li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="common_work_type_architecture">
+                Construction
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Production"><img alt="T_icon_construction_tab_00" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_00.webp" height="24"/><span data-i18n="category_type_a_product">Production</span></a></li>
+                <li><a class="dropdown-item" href="/en/Pal"><img alt="T_icon_construction_tab_01" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_01.webp" height="24"/><span data-i18n="category_type_a_pal">Pal</span></a></li>
+                <li><a class="dropdown-item" href="/en/Storage"><img alt="T_icon_construction_tab_02" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_02.webp" height="24"/><span data-i18n="category_type_a_storage">Storage</span></a></li>
+                <li><a class="dropdown-item" href="/en/Food"><img alt="T_icon_construction_tab_03" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_03.webp" height="24"/><span data-i18n="category_type_a_food">Food</span></a></li>
+                <li><a class="dropdown-item" href="/en/Infrastructure"><img alt="T_icon_construction_tab_04" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_04.webp" height="24"/><span data-i18n="category_type_a_infrastructure">Infrastructure</span></a></li>
+                <li><a class="dropdown-item" href="/en/Lighting"><img alt="T_icon_construction_tab_05" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_05.webp" height="24"/><span data-i18n="category_type_a_light">Lighting</span></a></li>
+                <li><a class="dropdown-item" href="/en/Foundations"><img alt="T_icon_construction_tab_06" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_06.webp" height="24"/><span data-i18n="category_type_a_foundation">Foundations</span></a></li>
+                <li><a class="dropdown-item" href="/en/Defenses"><img alt="T_icon_construction_tab_07" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_07.webp" height="24"/><span data-i18n="category_type_a_defense">Defenses</span></a></li>
+                <li><a class="dropdown-item" href="/en/Other"><img alt="T_icon_construction_tab_08" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_08.webp" height="24"/><span data-i18n="category_type_a_other">Other</span></a></li>
+                <li><a class="dropdown-item" href="/en/Furniture"><img alt="T_icon_construction_tab_09" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_09.webp" height="24"/><span data-i18n="category_type_a_furniture">Furniture</span></a></li>
+                <!--
+                <li><a class="dropdown-item" href="/en/Schematics"><img alt="T_icon_construction_tab_10" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_construction_tab_10.webp" height="24"/><span data-i18n="category_type_a_blueprint">Schematics</span></a></li>
+                -->
+              </ul>
+            </li>
+    
+    
+            <li class="nav-item">
+              <a class="nav-link" href="/en/Map" data-i18n="setting_key_ui_openworldmap" data-i18n-tw="地圖">Map</a>
+            </li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n-tw="計算">
+                Calc
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Breed" data-i18n-tw="配種計算">Breeding Calc</a></li>
+                <!--<li><a class="dropdown-item" href="/en/BreedEoC" data-i18n-tw="配種計算 +克蘇魯之眼">Breeding Calc +Eye of Cthulhu</a></li>-->
+                <li><a class="dropdown-item" href="/en/Iv_Calc" data-i18n-tw="個體值計算">IV Calc</a></li>
+                <li><a class="dropdown-item" href="/en/Pal_Calc" data-i18n-tw="帕魯計算">Pal Calc</a></li>
+                <li><a class="dropdown-item" href="/en/Capture_Rate" data-i18n="capture_reticle_capture_rate">Capture Rate</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/en/Mods" data-i18n-tw="模組安裝">Mods Install</a></li>
+                <!--
+                <li><a class="dropdown-item" href="/en/Pals_Table">Pals Table</a></li>
+                <li><a class="dropdown-item" href="/en/NPCs_Table">NPCs Table</a></li>
+                <li><a class="dropdown-item" href="/en/Items_Table">Items Table</a></li>
+                <li><a class="dropdown-item" href="/en/ActiveSkills_Table">ActiveSkills Table</a></li>
+                <li><a class="dropdown-item" href="/en/PassiveSkills_Table">PassiveSkills Table</a></li>
+                -->
+    
+              </ul>
+            </li>
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-i18n="category_type_a_other">
+                Other
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/en/Breeding_Farm" data-i18n="mapobject_name_breedfarm">Breeding Farm</a></li>
+                <li><a class="dropdown-item" href="/en/Technologies" data-i18n="ingame_main_menu_technology">Technologies</a></li>
+                <li><a class="dropdown-item" href="/en/Merchant" data-i18n="name_selesperson">Merchant</a></li>
+                <li><a class="dropdown-item" href="/en/Black_Marketeer" data-i18n="name_darktrader">Black Marketeer</a></li>
+                <li><a class="dropdown-item" href="/en/Treasure_Box" data-i18n-tw="寶箱">Treasure Box</a></li>
+                <li><a class="dropdown-item" href="/en/Arrogant_Pal_Critic" data-i18n="name_reward_paldisplay">Arrogant Pal Critic</a></li>
+                <li><a class="dropdown-item" href="/en/Arrogant_Foodie" data-i18n="name_reward_food">Arrogant Foodie</a></li>
+                <li><a class="dropdown-item" href="/en/Journals" data-i18n="note_title">Memo</a></li>
+                <li><a class="dropdown-item" href="/en/Tips" data-i18n="helpguide_title">Tips</a></li>
+                <li><a class="dropdown-item" href="/en/Base" data-i18n="map_filter_camp">Base</a></li>
+                <li><a class="dropdown-item" href="/en/Mission" data-i18n="ingame_mainmenu_quest">Mission</a></li>
+                <li><a class="dropdown-item" href="/en/Dungeons" data-i18n-tw="地下城">Dungeons</a></li>
+                <li><a class="dropdown-item" href="/en/Eggs" data-i18n-tw="帕魯蛋">Eggs</a></li>
+                <li><a class="dropdown-item" href="/en/Caged" data-i18n-tw="籠子">Caged</a></li>
+                <!--<li><a class="dropdown-item" href="/en/Roadmap" data-i18n-tw="更新計畫">Roadmap</a></li>-->
+              </ul>
+            </li>
+    
+          </ul>
+    
+          <ul class="navbar-nav language-selector">
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-language fa-lg"></i></a>
+              <ul class="dropdown-menu language-menu">
+                <li><a class='dropdown-item' href='/en/'>EN English</a></li>
+                <li><a class='dropdown-item' href='/tw/'>TW 繁體中文</a></li>
+                <li><a class='dropdown-item' href='/ko/'>KO 한국어</a></li>
+                <li><a class='dropdown-item' href='/cn/'>CN 简体中文</a></li>
+                <li><a class='dropdown-item' href='/ja/'>JA Japanese</a></li>
+                <li><a class='dropdown-item' href='/es/'>ES Spanish</a></li>
+                <li><a class='dropdown-item' href='/de/'>DE Deutsch</a></li>
+                <li><a class='dropdown-item' href='/fr/'>FR Français</a></li>
+                <li><a class='dropdown-item' href='/it/'>IT Italian</a></li>
+                <li><a class='dropdown-item' href='/pt/'>PT Português</a></li>
+                <li><a class='dropdown-item' href='/ru/'>RU Русский</a></li>
+                <li><a class="dropdown-item" href="/th/">TH ภาษาไทย</a></li>
+                <li><a class="dropdown-item" href="/id/">ID Indonesian</a></li>
+                <li><a class="dropdown-item" href="/pl/">PL Polish</a></li>
+                <li><a class="dropdown-item" href="/tr/">TR Turkish</a></li>
+                <li><a class="dropdown-item" href="/vi/">VI Vietnamese</a></li>
+                <li><a class="dropdown-item" href="/mx/">MX Spanish</a></li>
+              </ul>
+            </li>
+          </ul>
+    
+          <form class="d-flex" role="search" id="autocomplete">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="navautosearch">
+          </form>
+    
+        </div>
+      </div>
+    </nav>
+
+<script> sidebar160('leftside_banner', 'left'); </script>
+<script> sidebar160('rightside_banner', 'right'); </script>
+
+    <div class="page">
+    <div class="page-content container" role="main">
+        <div id="topbanner970"></div><script>topbanner970("topbanner970");</script>
+
+    <div class="row">
+
+<div class="col-lg-4">
+    <div class="card itemPopup">
+    <div class="hover_banner banner_rarity0">
+        <div style="height: 36px;" class="ps-2 d-flex">
+            <div class="align-self-center" style="font-size: x-large; text-shadow: 1px 1px 5px black;"><a class="itemname" data-hover="?s=MapObjects%2FStonePit" href="Stone_Pit">Stone Pit</a> </div>
+        </div>
+        <div style="height: 24px" class="px-2 d-flex">
+            <span class="me-auto" style="color: #959ea9; text-shadow: 1px 1px 5px black;">Production</span>
+        </div>
+    </div>
+    <div class="hover_bg_rarity" style="height: 2px;">
+    </div>
+    <div class="hover_icon_bg d-flex justify-content-between">
+        <div class="d-flex h-100" style="padding-left: 1rem;">
+            <a href="Stone_Pit"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/BuildObject/PNG/T_icon_buildObject_StonePit.webp" class="align-self-center size128"></a>
+        </div>
+        <div class="d-flex flex-column small"><span class="d-inline-block me-2 my-1"><span class="bg-dark bg-gradient p-1"><span data-hover="/cache/en/Game_Technology_hover/5eb6b3b6cc7f7f48235173f5a265fd4da69a2e68c40d5386d923badb8f7ef826">Technology</span></span><span class="border p-1">7</span></span> <span class="d-inline-block me-2 my-1"><span class="bg-dark bg-gradient p-1"><a href="Mining"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_07.webp" class="size24"/></a></span><span class="border p-1">1</span></span> <span class="d-inline-block me-2 my-1"><span class="bg-dark bg-gradient p-1">SAN</span><span class="border p-1">-0.15</span></span></div>
+    </div>
+    <div class="card-body py-2">
+        <div>A facility for producing <a class="itemname" data-hover="/cache/en/Game_Items_hover/2e05766fa405306be77cab7c85d1c8fd1364db60cb9bc3984eb8bd7ee85d055c"  href="Stone">Stone</a>.
+Mining <a class="itemname" data-hover="/cache/en/Game_Items_hover/2e05766fa405306be77cab7c85d1c8fd1364db60cb9bc3984eb8bd7ee85d055c"  href="Stone">Stone</a> is hard work that requires much physical endurance.
+Leave it to Pals skilled at mining.</div>
+    </div>
+    <div class="recipes">
+        <div class="d-flex justify-content-between p-2 align-items-center border-top">
+            <div><a class="itemname" data-hover="/cache/en/Game_Items_hover/2e05766fa405306be77cab7c85d1c8fd1364db60cb9bc3984eb8bd7ee85d055c" href="Stone"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_Stone.webp" class="size32 border bg_rarity0"/>Stone</a></div>
+            <div>50</div>
+        </div>
+        <div class="d-flex justify-content-between p-2 align-items-center border-top">
+            <div><a class="itemname" data-hover="/cache/en/Game_Items_hover/4c86c69dab4bd60a44f6a7243fe86cf9726907131af83499f08f211f9a31c3c3" href="Wood"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_Wood.webp" class="size32 border bg_rarity0"/>Wood</a></div>
+            <div>20</div>
+        </div>
+        <div class="d-flex justify-content-between p-2 align-items-center border-top">
+            <div><a class="itemname" data-hover="/cache/en/Game_Items_hover/fa42fc5bcc557029a3f40e4aa04a9b93261c0beed0176d329d147664eb84b3e4" href="Paldium_Fragment"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_Pal_crystal_S.webp" class="size32 border bg_rarity0"/>Paldium Fragment</a></div>
+            <div>10</div>
+        </div>
+    </div>
+</div>
+
+
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title text-info"> Stats </h5>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>Type</div>
+                <div><a href="Production">Production</a></div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>Workload</div>
+                <div><a href="Handiwork"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_04.webp" class="size24"/>Handiwork</a> x<span data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="<div>Lv.1: 2m22s</div><div>Lv.2: 1m6s</div><div>Lv.3: 34s</div><div>Lv.4: 20s</div><div>Lv.5: 10s</div>">10000</span></div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>Code</div>
+                <div>StonePit</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>Defense</div>
+                <div>4</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div><a href="Mining"><img loading="lazy" src="https://cdn.paldb.cc/image/Pal/Texture/UI/InGame/T_icon_palwork_07.webp" class="size24"/>Mining</a></div>
+                <div>1</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title text-info"> Others </h5>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>Hp</div>
+                <div>10000</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>Hp_PVP</div>
+                <div>10000</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>Defense_PVP</div>
+                <div>12</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>bBelongToBaseCamp</div>
+                <div>1</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>DeteriorationDamage</div>
+                <div>0.2</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>bShowHPGauge</div>
+                <div>1</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>TypeA</div>
+                <div>Product</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>SortId</div>
+                <div>18</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>TypeB</div>
+                <div>Prod_Resource</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>TypeUIDisplay</div>
+                <div>Deforest_Mining</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>Rank</div>
+                <div>1</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>AssetValue</div>
+                <div>1</div>
+            </div>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div>BuildExpRate</div>
+                <div>3.64</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="col-lg-8">
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title text-info" data-i18n="convert_item_product_tab_title">
+                Production
+            </h5>
+            <div class="row row-cols-1 row-cols-lg-2 g-2">  </div>
+            <table class="table mb-0">
+                <thead>
+                    <tr><th data-i18n-tw="材料">Materials<th data-i18n-tw="產品">Product<th data-i18n-tw="設計圖">Schematic
+                <tbody>
+                    <tr><td><a class="itemname" data-hover="/cache/en/Game_Items_hover/2e05766fa405306be77cab7c85d1c8fd1364db60cb9bc3984eb8bd7ee85d055c" href="Stone"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_Stone.webp" class="size32 border bg_rarity0"/>Stone</a> <small class="itemQuantity">50</small> <a class="itemname" data-hover="/cache/en/Game_Items_hover/4c86c69dab4bd60a44f6a7243fe86cf9726907131af83499f08f211f9a31c3c3" href="Wood"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_Wood.webp" class="size32 border bg_rarity0"/>Wood</a> <small class="itemQuantity">20</small> <a class="itemname" data-hover="/cache/en/Game_Items_hover/fa42fc5bcc557029a3f40e4aa04a9b93261c0beed0176d329d147664eb84b3e4" href="Paldium_Fragment"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_Pal_crystal_S.webp" class="size32 border bg_rarity0"/>Paldium Fragment</a> <small class="itemQuantity">10</small><td>Stone Pit<td>Technology Lv 7
+            </table>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/treant-js/1.0/Treant.css" integrity="sha512-ySoXPqkgXC7K7IS5vOdi47uEpct2yJ3MkYVVVHiM7FOmdDnBUVSmB/D1ps2Pf6jBJnBMyh1EPJLpWh2uCzOLdg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js" integrity="sha512-tBzZQxySO5q5lqwLWfu8Q+o4VkTcRGOeQGVQ0ueJga4A1RKuzmAu5HXDOXLEjpbKyV7ow9ympVoa6wZLEzRzDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/treant-js/1.0/Treant.min.js" integrity="sha512-ADpWKsaOuAegRSoUObE1si2VF6HQJyQR3Zy44l7s6YsGA6BnPIrIwN9uKJ0rsMhtDAMFqnGZhQXMJcsWSp40pA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<div class="chart" id="StonePit" data-treant="{&quot;text&quot;:{&quot;name&quot;:&quot;1&quot;},&quot;image&quot;:&quot;https://cdn.paldb.cc/image/Pal/Texture/BuildObject/PNG/T_icon_buildObject_StonePit.webp&quot;,&quot;children&quot;:[{&quot;text&quot;:{&quot;name&quot;:50},&quot;image&quot;:&quot;https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_Stone.webp&quot;,&quot;HTMLclass&quot;:&quot;bg_rarity0&quot;,&quot;link&quot;:{&quot;href&quot;:&quot;Stone&quot;}},{&quot;text&quot;:{&quot;name&quot;:20},&quot;image&quot;:&quot;https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_Wood.webp&quot;,&quot;HTMLclass&quot;:&quot;bg_rarity0&quot;,&quot;link&quot;:{&quot;href&quot;:&quot;Wood&quot;}},{&quot;text&quot;:{&quot;name&quot;:10},&quot;image&quot;:&quot;https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_Pal_crystal_S.webp&quot;,&quot;HTMLclass&quot;:&quot;bg_rarity0&quot;,&quot;link&quot;:{&quot;href&quot;:&quot;Paldium_Fragment&quot;},&quot;children&quot;:[{&quot;text&quot;:{&quot;name&quot;:50},&quot;image&quot;:&quot;https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_Stone.webp&quot;,&quot;HTMLclass&quot;:&quot;bg_rarity0&quot;,&quot;link&quot;:{&quot;href&quot;:&quot;Stone&quot;}}]}]}"></div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title text-info">
+                Farm
+            </h5>
+            <div class="d-flex justify-content-between p-2 align-items-center border-bottom">
+                <div><a class="itemname" data-hover="/cache/en/Game_Items_hover/2e05766fa405306be77cab7c85d1c8fd1364db60cb9bc3984eb8bd7ee85d055c" href="Stone"><img loading="lazy" src="https://cdn.paldb.cc/image/Others/InventoryItemIcon/Texture/T_itemicon_Material_Stone.webp" class="size32 border bg_rarity0"/>Stone</a> x1</div>
+                <div>Workload x<span data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="<div>Lv.1: 12s</div><div>Lv.2: 6s</div><div>Lv.3: 3s</div><div>Lv.4: 2s</div><div>Lv.5: 0.8s</div>">800</span></div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+</div>
+
+    </div>
+    </div>
+
+    <footer class="text-center text-lg-left container mt-2">
+      <div class="card p-4">
+        <div class="row">
+
+          <div class="col-lg-3 col-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Sites</h5>
+            <ul class="list-unstyled mb-0">
+              <li> <a target="_blank" href="https://poedb.tw/">poedb.tw</a> </li>
+              <li> <a target="_blank" href="https://tlidb.com/">tlidb.com</a> </li>
+              <!--<li> <a target="_blank" href="https://diablo4.cc/">diablo4.cc</a> </li>-->
+              <li> <a target="_blank" href="https://poe2db.tw/">poe2db.tw</a> </li>
+              <li> <a target="_blank" href="https://paldb.cc/">paldb.cc</a> </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">About Site</h5>
+            <ul class="list-unstyled mb-0">
+              <li> <a href="privacy">Privacy</a> </li>
+              <li> <a target="_blank" href="https://www.reddit.com/user/chuanhsing">About US</a> </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Version</h5>
+            <ul class="list-unstyled mb-0">
+              <li> <a href="version">v0.7.1</a> 2026/1/21</li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Community</h5>
+            <ul class="list-unstyled mb-0">
+            </ul>
+          </div>
+
+        </div>
+      </div>
+      <div class="p-3">
+        <span>This site is fan-made and not affiliated with <a href="https://www.pocketpair.jp/" target="_blank">Pocketpair</a> in any way.</span>
+      </div>
+    </footer>
+
+    <a href="#top" id="toTop"><span class="fas fa-arrow-circle-up fa-3x"></span></a>
+
+    <script src="/js/footer.js?1771303867"></script>
+<script>
+$(document).ready(function()
+ {
+    if (window.location.hostname != "paldb.cc") {
+        window.location.href="https://paldb.cc/";
+    }
+ });
+</script>
+
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"ad52ef62a25e4a188cfdb0e6f473e83b","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+

@@ -1,0 +1,543 @@
+﻿# Project Progress and Implementation Roadmap
+
+## Usage Rule
+- This file is mandatory to update after every code or data change.
+- Every completed task must be checked in the same change that implements it.
+- Every newly discovered task must be added in the correct phase before continuing.
+- No ambiguous task text is allowed.
+
+## Current Status
+- Date baseline: 2026-02-24
+- Phase in progress: Phase 1
+- Blockers: None
+
+## Locked Decisions
+- Frontend: React + TypeScript + Vite + Bun + Tailwind + shadcn/ui + Lucide.
+- Backend API/webserver: Rust.
+- Database: PostgreSQL in development and production.
+- Save transfer format: ZIP only.
+- Save processing model: patch-on-original (never rebuild entire save from normalized tables alone).
+- Conversion scope: player, pals, base pal assignments, and planner-required fields only.
+- Excluded conversion scope: structure placement/geometry and non-planner world simulation domains.
+- Save artifact policy: all imported and exported artifacts are immutable and versioned.
+- ZIP import supports nested-root auto-detection.
+- ZIP import requires `Players/` directory name (plural) and rejects `Player/`.
+- ZIP export root layout is fixed:
+- `Level.sav`
+- `LevelMeta.sav`
+- `LocalData.sav`
+- `WorldOption.sav`
+- `Players/`
+- Extra input files are ignored and excluded from export.
+- Only files with actual patch changes are modified.
+- Save mutation style is `SAV -> GVAS decode -> object mutation -> GVAS -> SAV recompress` for changed files only.
+- Artifact retention is forever.
+- Artifact hashes are SHA-256 and XXH64.
+
+## Non-Negotiable Architecture Rules
+- Import accepts ZIP archives containing multi-file save sets.
+- ZIP must include `Level.sav` and at least one `Players/*.sav`.
+- ZIP import accepts `Players/` directory name only.
+- ZIP import rejects `Player/` directory name.
+- Import must auto-detect valid world root from nested ZIP paths.
+- Extracted files from import are stored as immutable raw artifacts.
+- Normalized planner rows must store explicit links to raw artifact references.
+- User edits are stored as validated patch operations.
+- Export always starts from one immutable import version + one patchset.
+- Export outputs a new immutable ZIP artifact.
+- Unknown/untouched fields in source saves must round-trip unchanged.
+- Export output contains only required files and `Players/` folder.
+- Export ignores extra input files.
+- Export mutates targeted files only when patch changes exist.
+- Export decodes, mutates, re-encodes, and recompresses only targeted changed files.
+- Export copies untouched files byte-identical from source import artifacts.
+
+## Pal Editor Reference Findings (Normative)
+- Reference repository: `KrisCris/Palworld-Pal-Editor`, commit `56ed6bec3e684545fd33b9ecf04227b518cf940d` (2025-12-23).
+- Referenced save library pin in that repo: `KrisCris/palworld-save-tools`, commit `480f1f631295e32bd9c9fa5be689eb335bf912a7`.
+- `Level.sav` parsing root path in reference implementation: `worldSaveData`.
+- Player/pal entity collection path in reference implementation: `worldSaveData.CharacterSaveParameterMap`.
+- Entity discriminator in reference implementation: `value.RawData.value.object.SaveParameter.value.IsPlayer`.
+- Player identity join rule from reference implementation:
+- `Level.sav` player key `PlayerUId` and `InstanceId` must match `Players/{PLAYER_UID_HEX}.sav` path and `SaveData.IndividualId`.
+- Guild data source path in reference implementation: `worldSaveData.GroupSaveDataMap`.
+- Guild membership fields used by reference implementation:
+- `RawData.value.group_id`
+- `RawData.value.players[].player_uid`
+- `RawData.value.base_ids[]`
+- `RawData.value.individual_character_handle_ids[].instance_id`
+- Base camp source path in reference implementation: `worldSaveData.BaseCampSaveData`.
+- Base camp fields used by reference implementation:
+- `RawData.value.id`
+- `RawData.value.group_id_belong_to`
+- `RawData.value.container_id`
+- Character container source path in reference implementation: `worldSaveData.CharacterContainerSaveData`.
+- Character container fields used by reference implementation:
+- `key.ID` (container id)
+- `value.Slots[].RawData.value.instance_id` (pal instance id)
+- `value.Slots[].SlotIndex.value` (slot index)
+- Base worker heuristic used by reference implementation:
+- pal with missing `OwnerPlayerUId` and non-empty `OldOwnerPlayerUIds` is treated as base worker candidate.
+- Work assignment data paths available in pinned save library:
+- `worldSaveData.WorkSaveData` (workable records, per-work assignments, fixed assignment flag, target ids)
+- `worldSaveData.BaseCampSaveData.Value.WorkerDirector.RawData` (base worker director container and order bytes)
+- `worldSaveData.BaseCampSaveData.Value.WorkCollection.RawData` (work id collection per base)
+- Work assignment fields decoded by pinned save library:
+- `WorkableType`
+- `WorkAssignMap[].value.RawData.value.assigned_individual_id.instance_id`
+- `WorkAssignMap[].value.RawData.value.fixed`
+- `RawData.value.base_camp_id_belong_to`
+- `RawData.value.owner_map_object_model_id`
+- `RawData.value.owner_map_object_concrete_model_id`
+- `RawData.value.assign_define_data_id`
+- `RawData.value.assignable_fixed_type`
+- Save write behavior in reference implementation:
+- rewrites `Level.sav` and rewritten `Players/*.sav` files from parsed object graph.
+- compresses output with `compress_gvas_to_sav(..., 0x32, True)` in current version.
+- retains selected uninterpreted blobs via skip-decode/skip-encode property passthrough.
+- Path detection behavior in reference implementation:
+- save folder is considered valid when directory contains `Level.sav` and `Players` directory.
+- Known parser caveat from pinned save library:
+- `.worldSaveData.BaseCampSaveData.Value.ModuleMap` is listed as disabled for newer versions.
+
+## Canonical Repository Layout (Must Match)
+- `AGENTS.md`
+- `PROGRESS.md`
+- `data/`
+- `data/raw/`
+- `data/json/`
+- `docs/`
+- `docs/pal_editor_reference_notes.md`
+- `scripts/`
+- `src/server/`
+- `src/server/Cargo.toml`
+- `src/server/src/main.rs`
+- `src/server/src/config.rs`
+- `src/server/src/db/mod.rs`
+- `src/server/src/db/migrations/`
+- `src/server/src/api/routes.rs`
+- `src/server/src/api/handlers/`
+- `src/server/src/save/zip.rs`
+- `src/server/src/save/detect.rs`
+- `src/server/src/save/parse.rs`
+- `src/server/src/save/normalize.rs`
+- `src/server/src/save/patch.rs`
+- `src/server/src/save/export.rs`
+- `src/server/src/storage/fs.rs`
+- `src/web/`
+- `src/web/package.json`
+- `src/web/src/`
+- `src/web/src/lib/api.ts`
+- `src/web/src/lib/types.ts`
+- `src/web/src/store/`
+- `docker/`
+- `docker/docker-compose.dev.yml`
+- `docker/docker-compose.prod.yml`
+- `docker/server.Dockerfile`
+- `tests/fixtures/`
+- `tests/integration/`
+
+## Save ZIP Contract (Normative)
+- Import request body contains exactly one ZIP file.
+- ZIP file extension must be `.zip`.
+- ZIP file size must be checked before extraction.
+- ZIP entries are extracted with path traversal protection.
+- Import root detection rules:
+- Traverse ZIP paths and detect first candidate root containing:
+- `Level.sav`
+- `Players/*.sav`
+- Reject candidate root if player save directory is named `Player/`.
+- Reject import when no valid root exists.
+- Supported output entries (exact export layout):
+- `Level.sav`
+- `LevelMeta.sav`
+- `LocalData.sav`
+- `WorldOption.sav`
+- `Players/*.sav`
+- All extracted file paths are persisted in file manifest records.
+- Unsupported files are marked ignored and excluded from export ZIP.
+
+## Raw Artifact Storage Contract (Normative)
+- Imported ZIP storage key format:
+- `storage/imports/{import_version_id}/source.zip`
+- Extracted file storage key format:
+- `storage/imports/{import_version_id}/files/{relative_path}`
+- Exported ZIP storage key format:
+- `storage/exports/{export_version_id}/export.zip`
+- Exported extracted file storage key format:
+- `storage/exports/{export_version_id}/files/{relative_path}`
+- Every artifact record stores:
+- SHA-256 checksum
+- XXH64 checksum
+- byte size
+- UTC created timestamp
+- immutable flag
+- retention policy (`forever`)
+
+## Normalized Conversion Scope Contract (Normative)
+Only these domains are normalized into planner entities:
+- Player planner identity fields.
+- Pal planner state fields.
+- Base roster and pal assignment fields.
+- Planner-required derived values for production calculations.
+
+Required normalized player fields:
+- `import_version_id`
+- `player_uid`
+- `player_instance_id`
+- `player_name`
+- `guild_id`
+- `level`
+- `raw_file_ref`
+- `raw_entity_path`
+
+Required normalized pal fields:
+- `import_version_id`
+- `pal_instance_id`
+- `owner_player_uid`
+- `species_id`
+- `nickname`
+- `gender`
+- `level`
+- `exp`
+- `rank`
+- `rank_hp`
+- `rank_attack`
+- `rank_defense`
+- `rank_craftspeed`
+- `talent_hp`
+- `talent_melee`
+- `talent_shot`
+- `talent_defense`
+- `passive_skill_ids[]`
+- `mastered_waza_ids[]`
+- `equip_waza_ids[]`
+- `work_suitability_ranks` (JSON object keyed by work type)
+- `status_hp`
+- `status_sanity`
+- `status_hunger`
+- `worker_sick`
+- `revive_timer`
+- `raw_file_ref`
+- `raw_entity_path`
+
+Required normalized base assignment fields:
+- `import_version_id`
+- `base_id`
+- `pal_instance_id`
+- `assignment_kind`
+- `assignment_target`
+- `priority`
+- `raw_file_ref`
+- `raw_entity_path`
+
+## Patch Operation Contract (Normative)
+Allowed operation types:
+- `update_player_field`
+- `update_pal_field`
+- `replace_pal_passive_list`
+- `replace_pal_mastered_waza_list`
+- `replace_pal_equipped_waza_list`
+- `replace_pal_work_suitability_map`
+- `upsert_base_assignment`
+- `delete_base_assignment`
+- `create_base`
+- `delete_base`
+
+Required patch operation columns:
+- `patchset_id`
+- `sequence`
+- `op_type`
+- `target_kind`
+- `target_id`
+- `payload_json`
+- `validated`
+- `validation_error`
+
+Validation rules:
+- Operation sequence must be strictly increasing starting at 1.
+- Invalid operation type is rejected.
+- Unknown target entity is rejected.
+- Out-of-bounds base-game values are rejected.
+- Cross-field invalid states are rejected.
+- Unvalidated operations cannot be applied during export.
+
+## API Contract (Normative)
+Base path:
+- `/api/v1`
+
+Required endpoints:
+- `POST /save/import-zip`
+- `GET /save/import-versions/{id}`
+- `GET /save/import-versions/{id}/normalized`
+- `POST /save/import-versions/{id}/patchsets`
+- `GET /save/patchsets/{id}`
+- `POST /save/import-versions/{id}/exports`
+- `GET /save/export-versions/{id}`
+- `GET /save/export-versions/{id}/download`
+- `GET /health`
+- `GET /ready`
+
+Endpoint behavior requirements:
+- Import endpoint returns `import_version_id` only after artifacts + manifests + normalization persist successfully.
+- Patchset creation endpoint validates and stores all operations atomically.
+- Export endpoint applies exactly one patchset to exactly one import version.
+- Download endpoint returns ZIP binary with checksum header.
+
+## PostgreSQL Schema Contract (Normative)
+Required tables:
+- `save_import_versions`
+- `save_export_versions`
+- `save_zip_artifacts`
+- `save_files`
+- `save_variant_metadata`
+- `save_patchsets`
+- `save_patch_operations`
+- `save_export_lineage`
+- `planner_players`
+- `planner_pals`
+- `planner_base_assignments`
+- `planner_player_links`
+- `planner_pal_links`
+- `planner_base_assignment_links`
+
+Required key constraints:
+- Every table has UUID primary key.
+- Every child table has foreign key with `ON DELETE RESTRICT` unless explicitly archival.
+- `save_patch_operations` unique constraint on `(patchset_id, sequence)`.
+- `save_export_lineage` unique constraint on `export_version_id`.
+- `planner_*_links` must reference both normalized row and raw file artifact row.
+
+## Rust Backend Implementation Standard
+- Runtime: Tokio.
+- HTTP framework: Axum.
+- DB layer: SQLx with compile-time checked queries.
+- Serialization: Serde.
+- ZIP handling: `zip` crate with explicit path sanitization.
+- Hashing: SHA-256 via Rust crypto crate.
+- Logging: `tracing` + `tracing-subscriber` JSON format.
+- Config: environment variables only, loaded at startup and validated.
+
+## Frontend Implementation Standard
+- Use Bun for install, scripts, and runtime.
+- Vite dev server must proxy API requests to Rust server.
+- Frontend never parses `.sav` directly.
+- Frontend only uploads ZIP, reads normalized API payloads, sends patch operations, and downloads export ZIP.
+
+## Phase 0: Foundation and Contracts
+Definition of done:
+- All normative contracts in this file are implemented as code-level schema/docs stubs.
+
+Tasks:
+- [x] Create `AGENTS.md`.
+- [x] Create `PROGRESS.md`.
+- [x] Lock stack and architecture decisions.
+- [x] Lock requirement: nested-root auto-detect for ZIP import.
+- [x] Lock requirement: fixed export ZIP layout.
+- [x] Lock requirement: ignore extra files.
+- [x] Lock requirement: changed-file-only decode/mutate/re-encode/recompress.
+- [x] Lock requirement: forever retention.
+- [x] Lock requirement: SHA-256 + XXH64 hashes.
+- [x] Add `src/server/README.md` with exact dev run commands.
+- [x] Add `src/web/README.md` with exact dev run commands.
+- [ ] Add `docs/patch_operation_schema.json`.
+- [ ] Add `docs/save_zip_contract.md`.
+- [ ] Add `docs/normalized_scope_contract.md`.
+- [ ] Add `docs/export_lineage_contract.md`.
+- [x] Add `docs/pal_editor_reference_notes.md` with implementation notes from `https://github.com/KrisCris/Palworld-Pal-Editor`.
+
+## Phase 1: Repository Scaffolding
+Definition of done:
+- All required directories and bootstrap files exist.
+
+Tasks:
+- [x] Create Rust workspace under `src/server/`.
+- [x] Create Axum app entrypoint in `src/server/src/main.rs`.
+- [x] Create DB module skeleton in `src/server/src/db/mod.rs`.
+- [x] Create migration folder `src/server/src/db/migrations/`.
+- [x] Create API routing skeleton in `src/server/src/api/routes.rs`.
+- [ ] Create save modules (`zip.rs`, `detect.rs`, `parse.rs`, `normalize.rs`, `patch.rs`, `export.rs`) under `src/server/src/save/`.
+- [ ] Create storage module `src/server/src/storage/fs.rs`.
+- [x] Create Vite React app under `src/web/` using Bun.
+- [x] Add API client module `src/web/src/lib/api.ts`.
+- [x] Add shared frontend types `src/web/src/lib/types.ts`.
+- [x] Configure Vite `/api` proxy rewrite to backend root paths.
+
+## Phase 2: PostgreSQL Migrations and Models
+Definition of done:
+- All required tables exist with keys and constraints.
+
+Tasks:
+- [ ] Create migration `0001_save_versions.sql` for import/export version tables.
+- [ ] Create migration `0002_save_artifacts.sql` for ZIP and file manifests.
+- [ ] Create migration `0003_patchsets.sql` for patchset and operations.
+- [ ] Create migration `0004_normalized_entities.sql` for planner players/pals/assignments.
+- [ ] Create migration `0005_links.sql` for normalized-to-raw link tables.
+- [ ] Create migration `0006_lineage.sql` for export lineage table.
+- [ ] Add Rust model structs for every table.
+- [ ] Add integration test that migrates empty DB and verifies all tables/constraints exist.
+
+## Phase 3: ZIP Import Pipeline (Rust)
+Definition of done:
+- ZIP import endpoint stores immutable source artifacts and normalized records.
+
+Tasks:
+- [ ] Implement multipart upload handler `POST /api/v1/save/import-zip`.
+- [ ] Compute SHA-256, XXH64, and size for uploaded ZIP.
+- [ ] Persist ZIP artifact file to import storage key.
+- [ ] Extract ZIP with path sanitization and reject traversal entries.
+- [ ] Auto-detect nested world root and validate required files (`Level.sav`, `Players/*.sav`).
+- [ ] Persist extracted files and manifests.
+- [ ] Mark unsupported extra files as ignored.
+- [ ] Detect wrapper/compression variant for each target `.sav`.
+- [ ] Persist variant metadata rows.
+- [ ] Parse planner-scope entities from extracted files.
+- [ ] Document discovered mapping for base pal assignment fields and work target fields using real save inspection plus Pal Editor reference.
+- [ ] Persist normalized planner entities.
+- [ ] Persist normalized-to-raw link rows.
+- [ ] Return `import_version_id`.
+
+## Phase 4: Normalization and Planner Projection
+Definition of done:
+- API returns deterministic normalized projection for a given import version.
+
+Tasks:
+- [ ] Implement `GET /api/v1/save/import-versions/{id}/normalized`.
+- [ ] Include players, pals, base assignments, and planner-required fields only.
+- [ ] Include stable IDs for all normalized rows.
+- [ ] Include raw link references for every normalized row.
+- [ ] Add snapshot test for normalized payload determinism.
+
+## Phase 5: Patchset API and Validation
+Definition of done:
+- Patchsets can be created and validated atomically.
+
+Tasks:
+- [ ] Implement `POST /api/v1/save/import-versions/{id}/patchsets`.
+- [ ] Validate operation sequence and operation type.
+- [ ] Validate target existence against normalized projection.
+- [ ] Validate base-game legal bounds for every edited field.
+- [ ] Persist patchset and operations in one DB transaction.
+- [ ] Implement `GET /api/v1/save/patchsets/{id}`.
+- [ ] Add negative tests for each validation error class.
+
+## Phase 6: Export Pipeline (Rust)
+Definition of done:
+- Export applies patchset to immutable source version and returns ZIP.
+
+Tasks:
+- [ ] Implement `POST /api/v1/save/import-versions/{id}/exports`.
+- [ ] Load source artifacts for the import version.
+- [ ] Load and validate referenced patchset is already validated.
+- [ ] Parse canonical source save objects retaining unknown fields.
+- [ ] Apply operations in sequence order.
+- [ ] Compute targeted changed file set.
+- [ ] For each targeted changed file, run `SAV -> GVAS decode -> object mutation -> GVAS -> SAV recompress`.
+- [ ] Leave untouched files byte-identical.
+- [ ] Build export ZIP with exact root layout:
+- [ ] `Level.sav`
+- [ ] `LevelMeta.sav`
+- [ ] `LocalData.sav`
+- [ ] `WorldOption.sav`
+- [ ] `Players/*.sav`
+- [ ] Exclude ignored extra files from export ZIP.
+- [ ] Re-pack deterministic ZIP ordering and timestamp policy.
+- [ ] Persist export ZIP artifact and file manifest.
+- [ ] Persist export lineage row linking import, patchset, export.
+- [ ] Implement `GET /api/v1/save/export-versions/{id}/download`.
+- [ ] Add round-trip fidelity tests for untouched fields.
+
+## Phase 7: Planner Calculation Engine
+Definition of done:
+- Planner computes deterministic throughput and work demand from normalized data.
+
+Tasks:
+- [ ] Implement TypeScript calc module `web/src/lib/calc/index.ts`.
+- [ ] Implement work demand by work type.
+- [ ] Implement pal work contribution using suitability + modifiers.
+- [ ] Implement building throughput computations for planner-supported production nodes.
+- [ ] Implement target-output solver (`required work power`, `required assignments`).
+- [ ] Add fixture tests for Ore and Wheat scenarios.
+
+## Phase 8: Planner UI
+Definition of done:
+- User can import ZIP, edit planner entities, and export ZIP.
+
+Tasks:
+- [ ] Implement Import ZIP page.
+- [ ] Implement Import Version selector.
+- [ ] Implement Players and Pals editor views.
+- [ ] Implement Base assignment editor view.
+- [ ] Implement Production target panel.
+- [ ] Implement Patch preview panel.
+- [ ] Implement Export ZIP action and download.
+- [ ] Render in-game icons for pals/work/buildings/items where available.
+
+## Phase 9: Development Environment
+Definition of done:
+- One deterministic dev startup command path works on a fresh machine.
+
+Tasks:
+- [ ] Add `docker/docker-compose.dev.yml` with PostgreSQL service.
+- [ ] Add `.env.example` for Rust server and web frontend.
+- [ ] Add `Makefile` with exact commands:
+- [ ] `dev-db-up`
+- [ ] `dev-server`
+- [ ] `dev-web`
+- [ ] Add health/readiness checks.
+- [ ] Add startup verification script that fails fast on missing env vars.
+
+## Phase 10: Production Containerization
+Definition of done:
+- Production containers run Rust API + PostgreSQL and support import/export workflow.
+
+Tasks:
+- [ ] Add `docker/server.Dockerfile` for Rust binary image.
+- [ ] Add `docker/docker-compose.prod.yml`.
+- [ ] Add DB migration run step to server startup.
+- [ ] Mount persistent storage volume for artifact files.
+- [ ] Mount persistent PostgreSQL volume.
+- [ ] Add production healthchecks.
+
+## Phase 11: Test Matrix and Release Gates
+Definition of done:
+- All release gates pass with no unresolved critical defects.
+
+Tasks:
+- [ ] Unit tests: save detection, normalization, patch validation, export serialization.
+- [ ] Integration tests: ZIP import -> normalized -> patchset -> export -> download.
+- [ ] Regression tests: untouched-field fidelity across round-trip.
+- [ ] API contract tests: request/response schema validation.
+- [ ] Performance tests: import/export for large saves.
+- [ ] Security tests: zip traversal rejection, malformed payload rejection.
+- [ ] Import tests: nested-root auto-detection success and invalid-root rejection.
+- [ ] Export tests: exact root layout and required files present.
+- [ ] Export tests: ignored extra files are absent from export ZIP.
+- [ ] Export tests: only targeted changed files differ; untouched files remain byte-identical.
+- [ ] Release checklist documented and executed.
+
+## Immediate Next Tasks (Execution Queue)
+- [ ] Implement `src/server/src/save/*` module skeletons.
+- [ ] Implement `src/server/src/storage/fs.rs` module skeleton.
+- [ ] Implement PostgreSQL migrations `0001` through `0003`.
+- [ ] Implement `POST /api/v1/save/import-zip` happy path.
+- [ ] Implement minimal normalized payload endpoint.
+
+## Decisions Log
+- 2026-02-24: Stack fixed to Bun frontend + Rust webserver + PostgreSQL + Docker. Python scripts use `uv`.
+- 2026-02-24: Development mode requires PostgreSQL.
+- 2026-02-24: Save import/export uses ZIP archives containing multi-file Palworld save sets.
+- 2026-02-24: Save handling uses patch-on-original model.
+- 2026-02-24: Imported and exported artifacts are immutable versioned records.
+- 2026-02-24: Conversion scope is planner-only and excludes structure placement/geometry.
+- 2026-02-24: ZIP import supports nested roots via auto-detection.
+- 2026-02-24: Export ZIP layout is fixed to `Level.sav`, `LevelMeta.sav`, `LocalData.sav`, `WorldOption.sav`, and `Players/`.
+- 2026-02-24: Extra files are ignored and excluded from export.
+- 2026-02-24: Export modifies targeted changed files only using `SAV -> GVAS decode -> object mutation -> GVAS -> SAV recompress`.
+- 2026-02-24: Retention policy is forever.
+- 2026-02-24: Artifact hash policy uses both SHA-256 and XXH64.
+- 2026-02-24: Palworld-Pal-Editor repository is a required implementation reference for patch behavior and save mapping.
+- 2026-02-24: Reference inspection locked to `KrisCris/Palworld-Pal-Editor@56ed6be` and `KrisCris/palworld-save-tools@480f1f6` for initial mapping.
+- 2026-02-24: Import/export player save directory name is locked to `Players/` only; `Player/` is rejected.
+- 2026-02-24: Local development database `paldesigner` is created and validated with credentials `postgres:postgres`.
+- 2026-02-24: Rust `/ready` check uses `SELECT 1` decoded as `i32` to match PostgreSQL scalar type.
