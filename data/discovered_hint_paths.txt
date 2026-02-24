@@ -1,0 +1,3 @@
+# Auto-discovered GVAS hint paths.
+# Format: <hint_path>|<hint_type>
+# Example: worldSaveData.SomePath.Value|StructProperty

@@ -135,6 +135,8 @@ Validation requirements:
   - `PROGRESS.md` checkbox update in the same change.
 - Keep planner math deterministic and reproducible from JSON inputs.
 - Keep UI assets local or version-pinned so icons do not break.
+- Do not introduce parse-branch skipping purely for performance optimization until core importer/exporter/patch tooling is implemented end-to-end.
+- Current accepted baseline for import parser performance is approximately `decode_wrapper_ms ~= 300-400ms`, `parse_gvas_ms ~= 10-12s`, and `hint_pass_count = 0` on known fixture-like saves.
 
 ## Workflow Rules
 - `PROGRESS.md` is the source of truth for execution order and status.

@@ -1,6 +1,11 @@
+pub mod custom_registry;
 pub mod detect;
 pub mod export;
+pub mod hint_registry;
 pub mod normalize;
+pub mod paltypes;
 pub mod parse;
 pub mod patch;
+pub mod rawdata;
+pub mod roundtrip;
 pub mod zip;

@@ -5,9 +5,13 @@ edition = "2024"
 
 [dependencies]
 anyhow = "1.0.99"
+async-stream = "0.3.6"
 axum = { version = "0.8.4", features = ["multipart"] }
+byteorder = "1.5.0"
 dotenvy = "0.15.7"
 flate2 = "1.1.2"
+gvas = "0.11.0"
+oozextract = "0.5.0"
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.143"
 sha2 = "0.10.9"
@@ -16,6 +20,7 @@ tokio = { version = "1.47.1", features = ["macros", "rt-multi-thread", "signal",
 tower-http = { version = "0.6.6", features = ["cors", "trace"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.20", features = ["env-filter", "fmt", "json"] }
+uesave = "0.7.0"
 uuid = { version = "1.18.1", features = ["v4", "serde"] }
 xxhash-rust = { version = "0.8.15", features = ["xxh64"] }
 zip = { version = "0.6.6", default-features = false, features = ["deflate"] }

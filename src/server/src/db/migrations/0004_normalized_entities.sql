@@ -1,0 +1,61 @@
+CREATE TABLE IF NOT EXISTS planner_players (
+    id UUID PRIMARY KEY,
+    import_version_id UUID NOT NULL REFERENCES save_import_versions(id) ON DELETE RESTRICT,
+    player_uid TEXT NOT NULL,
+    player_instance_id TEXT,
+    player_name TEXT,
+    guild_id TEXT,
+    level INTEGER,
+    raw_file_ref UUID REFERENCES save_files(id) ON DELETE RESTRICT,
+    raw_entity_path TEXT NOT NULL DEFAULT '',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (import_version_id, player_uid)
+);
+
+CREATE TABLE IF NOT EXISTS planner_pals (
+    id UUID PRIMARY KEY,
+    import_version_id UUID NOT NULL REFERENCES save_import_versions(id) ON DELETE RESTRICT,
+    pal_instance_id TEXT NOT NULL,
+    owner_player_uid TEXT,
+    species_id TEXT,
+    nickname TEXT,
+    gender TEXT,
+    level INTEGER,
+    exp BIGINT,
+    rank INTEGER,
+    rank_hp INTEGER,
+    rank_attack INTEGER,
+    rank_defense INTEGER,
+    rank_craftspeed INTEGER,
+    talent_hp INTEGER,
+    talent_melee INTEGER,
+    talent_shot INTEGER,
+    talent_defense INTEGER,
+    passive_skill_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
+    mastered_waza_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
+    equip_waza_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
+    work_suitability_ranks JSONB NOT NULL DEFAULT '{}'::jsonb,
+    status_hp BIGINT,
+    status_sanity BIGINT,
+    status_hunger BIGINT,
+    worker_sick BOOLEAN,
+    revive_timer BIGINT,
+    raw_file_ref UUID REFERENCES save_files(id) ON DELETE RESTRICT,
+    raw_entity_path TEXT NOT NULL DEFAULT '',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (import_version_id, pal_instance_id)
+);
+
+CREATE TABLE IF NOT EXISTS planner_base_assignments (
+    id UUID PRIMARY KEY,
+    import_version_id UUID NOT NULL REFERENCES save_import_versions(id) ON DELETE RESTRICT,
+    base_id TEXT NOT NULL,
+    pal_instance_id TEXT NOT NULL,
+    assignment_kind TEXT,
+    assignment_target TEXT,
+    priority INTEGER,
+    raw_file_ref UUID REFERENCES save_files(id) ON DELETE RESTRICT,
+    raw_entity_path TEXT NOT NULL DEFAULT '',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (import_version_id, base_id, pal_instance_id, assignment_kind, assignment_target)
+);

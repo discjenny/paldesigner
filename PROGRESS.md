@@ -38,6 +38,7 @@
 - Changed-file recompression target format is `PlZ` (`0x32`, zlib).
 - Save import/export runtime pipeline is native Rust only.
 - Save runtime decode/re-encode does not use Python bridge processes.
+- Parser optimization decision: defer parse-scope branch skipping until importer/exporter/patch tooling is complete; current stable parse baseline (`decode ~339ms`, `gvas parse ~11.7s`, `hint passes = 0`) is accepted for now.
 
 ## Non-Negotiable Architecture Rules
 - Import accepts ZIP archives containing multi-file save sets.
@@ -274,6 +275,7 @@ Base path:
 Required endpoints:
 - `POST /save/import-zip`
 - `GET /save/import-versions/{id}`
+- `GET /save/import-versions/{id}/events`
 - `GET /save/import-versions/{id}/normalized`
 - `POST /save/import-versions/{id}/patchsets`
 - `GET /save/patchsets/{id}`
@@ -284,7 +286,8 @@ Required endpoints:
 - `GET /ready`
 
 Endpoint behavior requirements:
-- Import endpoint returns `import_version_id` only after artifacts + manifests + normalization persist successfully.
+- Import endpoint returns `import_version_id` after artifacts/manifests/seed rows persist and background decode-normalize job is queued.
+- Import progress endpoint streams deterministic SSE phases (`progress`, `done`, `progress_error`) until terminal status.
 - Patchset creation endpoint validates and stores all operations atomically.
 - Export endpoint applies exactly one patchset to exactly one import version.
 - Download endpoint returns ZIP binary with checksum header.
@@ -350,6 +353,7 @@ Tasks:
 - [ ] Add `docs/normalized_scope_contract.md`.
 - [ ] Add `docs/export_lineage_contract.md`.
 - [x] Add `docs/pal_editor_reference_notes.md` with implementation notes from `https://github.com/KrisCris/Palworld-Pal-Editor`.
+- [x] Add `docs/rust_palworld_save_tools_mirroring_guide.md` with exact Rust implementation instructions to mirror `palworld_save_tools` type hints, raw codecs, round-trip model, metrics, and validation gates.
 
 ## Phase 1: Repository Scaffolding
 Definition of done:
@@ -367,6 +371,8 @@ Tasks:
 - [x] Add API client module `src/web/src/lib/api.ts`.
 - [x] Add shared frontend types `src/web/src/lib/types.ts`.
 - [x] Configure Vite `/api` proxy rewrite to backend root paths.
+- [x] Extend frontend API client with import upload and import-version inspection endpoints.
+- [x] Extend frontend shared API types for import-version, file metadata, and normalized payload viewer surfaces.
 
 ## Phase 2: PostgreSQL Migrations and Models
 Definition of done:
@@ -376,9 +382,11 @@ Tasks:
 - [x] Create migration `0001_save_versions.sql` for import/export version tables.
 - [x] Create migration `0002_save_artifacts.sql` for ZIP and file manifests.
 - [x] Create migration `0003_patchsets.sql` for patchset and operations.
-- [ ] Create migration `0004_normalized_entities.sql` for planner players/pals/assignments.
-- [ ] Create migration `0005_links.sql` for normalized-to-raw link tables.
-- [ ] Create migration `0006_lineage.sql` for export lineage table.
+- [x] Create migration `0004_normalized_entities.sql` for planner players/pals/assignments.
+- [x] Create migration `0005_links.sql` for normalized-to-raw link tables.
+- [x] Create migration `0006_lineage.sql` for export lineage table.
+- [x] Create migration `0007_import_progress.sql` for phased import progress tracking columns (`progress_phase`, `progress_pct`, `progress_message`, `failed_error`).
+- [x] Create migration `0008_import_parse_metrics.sql` for parser telemetry column (`parse_metrics_json JSONB`).
 - [x] Run SQLx migrations automatically at Rust server startup.
 - [ ] Add Rust model structs for every table.
 - [ ] Add integration test that migrates empty DB and verifies all tables/constraints exist.
@@ -397,22 +405,29 @@ Tasks:
 - [x] Mark unsupported extra files as ignored.
 - [x] Detect wrapper/compression variant for each target `.sav`.
 - [x] Persist variant metadata rows.
-- [ ] Implement `PlM` (`0x31`) GVAS decode in Rust with `oozextract` (no `oo2core`).
+- [x] Move heavy decode/normalization work to asynchronous post-upload processing to avoid long blocking import requests.
+- [x] Add SSE progress endpoint for import processing phases.
+- [x] Implement `PlM` (`0x31`) GVAS decode in Rust with `oozextract` (no `oo2core`).
 - [ ] Parse planner-scope entities from extracted files.
+- [x] Parse planner-scope entities from extracted files.
 - [ ] Document discovered mapping for base pal assignment fields and work target fields using real save inspection plus Pal Editor reference.
-- [ ] Persist normalized planner entities.
-- [ ] Persist normalized-to-raw link rows.
+- [x] Persist normalized planner entities.
+- [x] Persist normalized-to-raw link rows.
 - [x] Return `import_version_id`.
+- [x] Implement `GET /api/v1/save/import-versions` and `GET /api/v1/save/import-versions/{id}` for persisted artifact/variant inspection.
+- [x] Extend import version API payloads with `progress_phase`, `progress_pct`, `progress_message`, and `failed_error`.
+- [x] Extend import version API payloads with `parse_metrics_json` for parse timing/count diagnostics.
+- [x] Seed initial normalized player rows from `Players/<uid>.sav` file names with raw file linkage.
 
 ## Phase 4: Normalization and Planner Projection
 Definition of done:
 - API returns deterministic normalized projection for a given import version.
 
 Tasks:
-- [ ] Implement `GET /api/v1/save/import-versions/{id}/normalized`.
-- [ ] Include players, pals, base assignments, and planner-required fields only.
-- [ ] Include stable IDs for all normalized rows.
-- [ ] Include raw link references for every normalized row.
+- [x] Implement `GET /api/v1/save/import-versions/{id}/normalized`.
+- [x] Include players, pals, base assignments, and planner-required fields only.
+- [x] Include stable IDs for all normalized rows.
+- [x] Include raw link references for every normalized row.
 - [ ] Add snapshot test for normalized payload determinism.
 
 ## Phase 5: Patchset API and Validation
@@ -471,6 +486,8 @@ Definition of done:
 - User can import ZIP, edit planner entities, and export ZIP.
 
 Tasks:
+- [x] Add a minimal import-version viewer page showing persisted import versions, file decode metadata, and normalized row counts.
+- [x] Add phased frontend progress bar showing upload phase and server decode/normalize phases via SSE.
 - [ ] Implement Import ZIP page.
 - [ ] Implement Import Version selector.
 - [ ] Implement Players and Pals editor views.
@@ -526,10 +543,19 @@ Tasks:
 ## Immediate Next Tasks (Execution Queue)
 - [x] Implement PostgreSQL migrations `0001` through `0003`.
 - [x] Implement `POST /api/v1/save/import-zip` happy path.
-- [ ] Implement minimal normalized payload endpoint.
+- [x] Implement minimal normalized payload endpoint.
 - [ ] Add integration tests for import endpoint ZIP validation and artifact persistence.
-- [ ] Implement and validate Rust `PlM` decode path with `oozextract` on `gamesave.zip`.
-- [ ] Implement planner-scope entity extraction from decoded `Level.sav` + `Players/*.sav`.
+- [x] Implement and validate Rust `PlM` decode path with `oozextract` on `gamesave.zip`.
+- [x] Implement planner-scope entity extraction from decoded `Level.sav` + `Players/*.sav`.
+- [x] Add frontend viewer for `import-versions` detail + normalized payload inspection.
+- [ ] Add frontend visualization for import SSE phases with deterministic status text and retry UX.
+- [x] Extend frontend types to include phased import progress fields and SSE progress event contract.
+- [x] Replace frontend import upload call with XHR-based upload progress reporting and SSE subscription utility.
+- [x] Implement mirrored Rust hint registry (`PALWORLD_TYPE_HINTS` + disabled-property filter) and use it as primary parse path.
+- [x] Implement mirrored custom codec registry keys with planner-critical decoders (`base_camp`, `worker_director`, `character_container`) and passthrough wrappers for remaining domains.
+- [x] Persist parser telemetry (`decode_wrapper_ms`, `parse_gvas_ms`, hint passes/counts, character/base/container counters) to `save_import_versions.parse_metrics_json`.
+- [ ] Implement full decode+encode parity codecs for `character`, `group`, and `work` raw domains (current state is passthrough-preserving wrappers).
+- [ ] Add differential validation test runner comparing Rust planner projections to Python reference fixture outputs.
 
 ## Decisions Log
 - 2026-02-24: Stack fixed to Bun frontend + Rust webserver + PostgreSQL + Docker. Python scripts use `uv`.
@@ -561,3 +587,88 @@ Tasks:
 - 2026-02-24: `src/server/README.md` now includes a concrete `curl` command for manual `POST /api/v1/save/import-zip` validation.
 - 2026-02-24: Save pipeline decision locked: no `oo2core` dependency; decode `PlM` with open-source backend and recompress changed files as `PlZ` (`0x32`).
 - 2026-02-24: Save runtime policy locked to native Rust only; Python remains optional for offline tooling scripts and is not part of runtime decode/re-encode.
+- 2026-02-24: Rust server now includes `oozextract` dependency to implement native `PlM` decode without proprietary Oodle runtime.
+- 2026-02-24: Save decode path now handles `PlM` (Oodle via `oozextract`) and `PlZ` (single/double zlib) in Rust.
+- 2026-02-24: Rust server dependency set now includes `uesave` for native GVAS parse/extract during import normalization.
+- 2026-02-24: Added Rust `save_probe` utility (`src/server/src/bin/save_probe.rs`) to inspect decoded Level/Players GVAS structure and confirm extraction paths against real save data.
+- 2026-02-24: `save_probe` is wired to reuse server save modules (`detect`, `parse`, `zip`) for format-consistent inspection output.
+- 2026-02-24: `save_probe` module path wiring uses `src/server/src/save/*` directly to keep probe behavior identical to importer decode logic.
+- 2026-02-24: `save_probe` now parses GVAS via `uesave::SaveReader.error_to_raw(true)` to tolerate unknown property schemas while exploring real saves.
+- 2026-02-24: `save_probe` now prints GVAS property kind and serialized snippets when key paths are not in expected struct form, to speed schema discovery.
+- 2026-02-24: `save_probe` now supplies initial Palworld struct-type hints to `uesave` (`worldSaveData.*` key/value paths) to parse beyond raw `worldSaveData` bytes.
+- 2026-02-24: `save_probe` parse mode now combines Palworld hints with `error_to_raw(true)` to keep partial structures available even when some nested schema hints remain missing.
+- 2026-02-24: Added Rust `gvas` dependency to evaluate hint-driven UE save parsing for `worldSaveData` and custom raw-byte substructures.
+- 2026-02-24: `save_probe` now uses `gvas::GvasFile::read_with_hints` plus Palworld hint map mirrored from `palworld_save_tools/paltypes.py` for direct `worldSaveData` structure inspection.
+- 2026-02-24: `save_probe` carries local decode helpers (`PlM`/`PlZ`) so probe runs independently of crate-internal module paths while preserving importer-equivalent decode behavior.
+- 2026-02-24: `save_probe` now auto-expands missing GVAS struct hints at parse time by normalizing verbose property-stack paths and mapping them back to Palworld reference hints.
+- 2026-02-24: `save_probe` now decodes `CharacterSaveParameterMap.Value.RawData` with gvas property parsing to validate extraction of planner-core character fields (is_player, ids, species, nickname, level).
+- 2026-02-24: `save_probe` property-stream decoder now materializes `HashableIndexMap<String, Vec<Property>>` rows for raw-character object traversal.
+- 2026-02-24: `save_probe` now inspects `BaseCampSaveData` and `CharacterContainerSaveData` first-entry key/value structures to lock base-assignment extraction paths.
+- 2026-02-24: `save_probe` now prints `CharacterContainerSaveData.Value.Slots` property variant so slot-to-pal assignment traversal can be implemented against the correct shape.
+- 2026-02-24: `save_probe` now inspects first `CharacterContainerSaveData` slot struct keys to confirm where `SlotIndex` and slot `RawData` bytes are exposed for base-roster normalization.
+- 2026-02-24: `save_probe` slot inspection now covers both `ArrayProperty::Structs` and `ArrayProperty::Properties` shapes for `CharacterContainerSaveData.Value.Slots`.
+- 2026-02-24: `save_probe` now prints `CharacterContainerSaveData.Value.Slots` concrete `ArrayProperty` variant to finalize slot decoding strategy.
+- 2026-02-24: `save_probe` now prints first slot `StructPropertyValue` variant for `CharacterContainerSaveData.Value.Slots` to verify slot struct body parsing viability.
+- 2026-02-24: `save_probe` now scans all `CharacterContainerSaveData` entries to locate a non-empty slots array and emit slot struct keys for assignment decoding.
+- 2026-02-24: `src/server/src/save/normalize.rs` now includes native Rust extraction for planner-scope entities from `Level.sav`: auto-hinted GVAS parse, character map decode (`RawData`), pal/player projection, and base-slot assignment projection via `BaseCampSaveData` + `CharacterContainerSaveData`.
+- 2026-02-24: `/api/v1/save/import-zip` now upserts normalized players/pals/base assignments from decoded `Level.sav` extraction and writes corresponding normalized-to-raw link rows in the same import transaction.
+- 2026-02-24: Added direct `byteorder` dependency for deterministic binary cursor reads in normalization decoders (`base_camp`, `worker_director`, slot `RawData`).
+- 2026-02-24: Importer normalized summary is now computed from persisted normalized rows after upserts (players/pals/base assignments) and returned in `POST /save/import-zip`.
+- 2026-02-24: Added import inspection APIs for versions, files, variant metadata, and normalized-row payload reads.
+- 2026-02-24: Normalized schema migrations (`0004`-`0006`) now define planner players/pals/base assignments, raw-link tables, and export lineage tables in PostgreSQL.
+- 2026-02-24: Import pipeline now seeds `planner_players` from `Players/<uid>.sav` filenames to provide immediate normalized DB visibility before full GVAS entity parsing.
+- 2026-02-24: Added migration `0007_import_progress.sql` so imports can expose phase-based status for SSE progress streaming.
+- 2026-02-24: Added artifact storage `read_bytes` helper for background import processing stages (variant decode and normalization).
+- 2026-02-24: Import handler refactor started for asynchronous post-upload processing and explicit phase progress state updates.
+- 2026-02-24: `save_import_versions` insert path now initializes `progress_phase`, `progress_pct`, and `progress_message` at import creation time.
+- 2026-02-24: Import request path no longer performs per-file SAV decode inspection inline; variant metadata generation is being moved to async post-processing.
+- 2026-02-24: Added background post-import worker scaffold in Rust to process variant metadata and planner normalization after upload transaction commit.
+- 2026-02-24: Import version API response model now includes explicit phased progress fields to support frontend progress bars and SSE updates.
+- 2026-02-24: Added `GET /api/v1/save/import-versions/{id}/events` SSE stream for phase/status updates (`progress`, `done`, `progress_error` events).
+- 2026-02-24: `POST /save/import-zip` now commits quickly and schedules decode/normalization in a background Tokio task.
+- 2026-02-24: Frontend shared API types now include import progress phase/message/pct and SSE event payload typing.
+- 2026-02-24: Frontend API client now uses `XMLHttpRequest` upload progress and `EventSource` SSE stream consumption for phased import progress updates.
+- 2026-02-24: Import viewer now renders phased progress UI (`uploading`, `processing`, `ready`, `failed`) and maps backend progress events to a single progress bar.
+- 2026-02-24: SSE completion handler now refreshes both import version list and selected import detail to avoid stale UI after background normalization finishes.
+- 2026-02-24: Frontend SSE parsing now handles malformed/non-JSON event payloads defensively and reports deterministic error messages.
+- 2026-02-24: SSE handler now emits strongly-typed `Result<Event, Infallible>` stream items to satisfy Axum SSE type inference at compile time.
+- 2026-02-24: Async import/SSE flow validated on local run (`POST /import-zip` returned in ~402 ms for `gamesave.zip`; SSE emitted `decoding_variants` progress event).
+- 2026-02-24: SSE server/client error channel now uses custom event name `progress_error` to avoid collision with native EventSource transport errors.
+- 2026-02-24: Upload API client now falls back to `responseText` JSON parsing when `XMLHttpRequest.response` is null to avoid browser parsing edge cases.
+- 2026-02-24: Fixed Vite dev proxy mismatch by removing `/api` path rewrite; backend routes are rooted at `/api/v1/*`, so dev proxy must forward `/api/*` unchanged.
+- 2026-02-24: Import background processing now offloads per-file SAV decode inspection and `Level.sav` normalization to `tokio::task::spawn_blocking` with explicit timeouts to prevent API event-loop starvation/hangs.
+- 2026-02-24: Normalization now pre-parses base assignments and selectively skips `CharacterSaveParameterMap` entries with zero `PlayerUId` unless the pal instance is required by base-slot assignments, reducing irrelevant world-entity decode work.
+- 2026-02-24: Frontend SSE progress handling now updates import-version list rows and selected detail live (status/phase/pct/message/counts), and top progress bar now uses backend `progress_pct` directly to prevent cross-panel mismatch.
+- 2026-02-24: Normalization stage now streams granular backend progress derived from `CharacterSaveParameterMap` scan (`processed/total/selected` plus current players/pals), with throttled DB updates and percentage mapped across `75..98` before finalize.
+- 2026-02-24: Added pre-scan normalization stage progress events (`decode wrapper`, `GVAS root parse`, `hint resolution passes`, `world container extraction`) so imports no longer appear frozen at 75% before character scan begins.
+- 2026-02-24: GVAS hint-resolution progress now reports every pass with missing-hint path and hint count, enabling exact stall-point diagnosis during parse.
+- 2026-02-24: Added in-process discovered-hint cache in normalization parser so subsequent imports in the same server session start with previously learned hint paths.
+- 2026-02-24: Increased normalization watchdog timeout from 120s to 300s while reducing repeated hint-resolution overhead and collecting accurate stage diagnostics.
+- 2026-02-24: Added `docs/rust_palworld_save_tools_mirroring_guide.md` as the canonical implementation guide for porting the Python reference decode/encode behavior to Rust without reducing planner fidelity.
+- 2026-02-24: Added `src/server/src/save/paltypes.rs` with mirrored `PALWORLD_TYPE_HINTS` and `DISABLED_PROPERTIES` from `palworld-save-tools` as the canonical Rust hint source.
+- 2026-02-24: Added `src/server/src/save/hint_registry.rs` to normalize/filter mirrored hint paths, merge in discovered hint cache, and centralize hint registry behavior.
+- 2026-02-24: Added `src/server/src/save/rawdata/mod.rs` scaffold with planner codec module layout plus shared binary helpers (GUID/FString reads, bounded byte reads, passthrough hex wrapper).
+- 2026-02-24: Added rawdata codec files for mirrored custom domains: `character`, `base_camp`, `worker_director`, `character_container`, `work`, and `group`; implemented decoded field extraction for base/worker/container and passthrough-preserving wrappers for remaining domains.
+- 2026-02-24: Added `src/server/src/save/custom_registry.rs` with mirrored `PALWORLD_CUSTOM_PROPERTIES` key coverage and codec-status behavior (`decoded` vs `passthrough`) for unimplemented domains.
+- 2026-02-24: Added `src/server/src/save/roundtrip.rs` with `KnownDecoded`, `OpaqueRaw`, and `HybridRaw` primitives and exported new save modules via `src/server/src/save/mod.rs`.
+- 2026-02-24: Started normalization mirror refactor by adding `ParseMetrics`, `NormalizationResult`, and registry imports in `src/server/src/save/normalize.rs` for metrics-backed parse pipeline wiring.
+- 2026-02-24: Normalization parser now starts from mirrored hint registry, emits required mirrored-hint stage messages, and caps fallback hint passes at 64 with discovered-hint cache updates.
+- 2026-02-24: Character-map normalization now returns explicit parse counters (`total`, `selected`, `decoded`) to populate deterministic parse metrics.
+- 2026-02-24: Base assignment extraction now routes raw byte decoding through the new custom codec registry (`BaseCamp`, `WorkerDirector`, `CharacterContainer` paths) and records base/container parse counters.
+- 2026-02-24: Removed legacy local hint table/cache from `normalize.rs`; normalization now relies on centralized mirrored hint registry only.
+- 2026-02-24: Hint-parse outcome now records concrete start/end hint counts from runtime map size, enabling accurate parse metrics persistence.
+- 2026-02-24: Added migration `0008_import_parse_metrics.sql` introducing `save_import_versions.parse_metrics_json JSONB` for importer parse telemetry persistence.
+- 2026-02-24: Import background processor now persists normalization parse metrics (`parse_metrics_json`) on successful completion and binds metrics into final `ready` status update.
+- 2026-02-24: Import version list/detail/SSE APIs now expose `parse_metrics_json` for UI-level parse diagnostics and hint/pass count visibility.
+- 2026-02-24: Frontend import viewer now includes `parse_metrics_json` in API types and summary rendering (decode ms, parse ms, hint pass/count span).
+- 2026-02-24: Fixed rawdata helper `decode_fstring` to handle nullable FString decode result correctly (`Option<String>` -> `Result<String, String>`).
+- 2026-02-24: Parse metrics now derive `disabled_property_skips` from mirrored `DISABLED_PROPERTIES` instead of hard-coded constants.
+- 2026-02-24: Hint inference now uses one mirrored-hint snapshot per parse invocation, avoiding repeated registry rebuilds during fallback pass loops.
+- 2026-02-24: Added explicit alias hint entries for observed `MapObjectSaveData` path variants (with/without duplicated `MapObjectSaveData` segment) to avoid fallback hint passes on live saves.
+- 2026-02-24: Fallback hint progress message now includes both simplified and raw missing path forms to support exact aliasing when live saves require typed-path variants.
+- 2026-02-24: Hint registry now persists fallback-discovered hint paths/types to `data/discovered_hint_paths.txt` (deduped append format `path|type`) and loads that file into the active hint map on subsequent parses.
+- 2026-02-24: Added 35 typed-path hint aliases from `data/discovered_hint_paths.txt` into `src/server/src/save/paltypes.rs` to reduce fallback resolution passes on live saves.
+- 2026-02-24: Reset `data/discovered_hint_paths.txt` to header-only after promoting current entries into `paltypes.rs`, so next import captures only newly unresolved hints.
+- 2026-02-24: Performance decision locked: retain current broad parse behavior for now; do not skip `MapObjectSaveData`/`Dungeon MapObject`/`FoliageGrid` branches purely for speed until full tooling stack is built.
+- 2026-02-24: Observed stable parser telemetry after hint expansion: `decode_wrapper_ms=339`, `parse_gvas_ms=11701`, `hint_pass_count=0`, `hint_count 74->74`.
+- 2026-02-24: Repository hygiene fix applied: `src/server/storage/` and `src/server/target_perf_test/` are now ignored and removed from Git tracking (`git rm --cached`) while remaining available as local runtime/build artifacts.
