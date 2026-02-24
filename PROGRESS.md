@@ -33,6 +33,11 @@
 - Save mutation style is `SAV -> GVAS decode -> object mutation -> GVAS -> SAV recompress` for changed files only.
 - Artifact retention is forever.
 - Artifact hashes are SHA-256 and XXH64.
+- Proprietary Oodle runtime (`oo2core_9_win64.dll`) is not allowed as a runtime dependency.
+- `PlM` decode must use open-source Oodle-compatible backends.
+- Changed-file recompression target format is `PlZ` (`0x32`, zlib).
+- Save import/export runtime pipeline is native Rust only.
+- Save runtime decode/re-encode does not use Python bridge processes.
 
 ## Non-Negotiable Architecture Rules
 - Import accepts ZIP archives containing multi-file save sets.
@@ -392,6 +397,7 @@ Tasks:
 - [x] Mark unsupported extra files as ignored.
 - [x] Detect wrapper/compression variant for each target `.sav`.
 - [x] Persist variant metadata rows.
+- [ ] Implement `PlM` (`0x31`) GVAS decode in Rust with `oozextract` (no `oo2core`).
 - [ ] Parse planner-scope entities from extracted files.
 - [ ] Document discovered mapping for base pal assignment fields and work target fields using real save inspection plus Pal Editor reference.
 - [ ] Persist normalized planner entities.
@@ -522,6 +528,7 @@ Tasks:
 - [x] Implement `POST /api/v1/save/import-zip` happy path.
 - [ ] Implement minimal normalized payload endpoint.
 - [ ] Add integration tests for import endpoint ZIP validation and artifact persistence.
+- [ ] Implement and validate Rust `PlM` decode path with `oozextract` on `gamesave.zip`.
 - [ ] Implement planner-scope entity extraction from decoded `Level.sav` + `Players/*.sav`.
 
 ## Decisions Log
@@ -552,3 +559,5 @@ Tasks:
 - 2026-02-24: `gamesave.zip` import verified end-to-end (`201`), persisted 1 source ZIP + 6 extracted files + 6 variant rows; sample save variant detected as `PLM` (`save_type=0x31`, Oodle), so GVAS decode remains `not_attempted` pending Oodle support.
 - 2026-02-24: Current Rust importer build status is clean (`cargo fmt`, `cargo check`), with only expected placeholder dead-code warnings in `save/export.rs` and `save/patch.rs`.
 - 2026-02-24: `src/server/README.md` now includes a concrete `curl` command for manual `POST /api/v1/save/import-zip` validation.
+- 2026-02-24: Save pipeline decision locked: no `oo2core` dependency; decode `PlM` with open-source backend and recompress changed files as `PlZ` (`0x32`).
+- 2026-02-24: Save runtime policy locked to native Rust only; Python remains optional for offline tooling scripts and is not part of runtime decode/re-encode.

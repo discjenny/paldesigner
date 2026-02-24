@@ -32,6 +32,7 @@ Explicitly excluded from conversion scope:
 - Frontend runtime and package manager: Bun.
 - Backend webserver/API: Rust.
 - Data and tooling scripts: Python with `uv`.
+- Save import/export runtime pipeline: native Rust only.
 - Database: PostgreSQL (development and production).
 - Container runtime: Docker.
 - Production runtime: Rust webserver + PostgreSQL in containerized deployment.
@@ -98,6 +99,10 @@ Validation requirements:
 - Save handling architecture:
   - Use patch model.
   - Keep imported save files immutable.
+  - Do not require proprietary Oodle runtime libraries (`oo2core_9_win64.dll`) anywhere in this project.
+  - Decode `PlM` (`0x31`) saves using open-source Oodle-compatible backends only.
+  - Decode `PlZ` (`0x32`) saves using zlib.
+  - Do not use Python bridge processes for save decode/re-encode in application runtime.
   - Apply validated patch operations to imported originals during export.
   - For each changed file only, execute: `SAV -> GVAS decode -> object mutation -> GVAS -> SAV recompress`.
   - Do not use JSON as the save round-trip format.
@@ -110,6 +115,7 @@ Validation requirements:
   - `Players/`
   - Update only files that have actual patch changes.
   - Re-encode/recompress only changed files.
+  - For changed files, output recompressed save files as `PlZ` (`0x32`, zlib) to avoid proprietary encoder dependency.
   - Copy untouched files byte-identical from the imported artifact set.
 - Save artifact versioning:
   - Store every imported ZIP and extracted raw file set as an immutable version with timestamp.
